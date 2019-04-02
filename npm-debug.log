@@ -1,0 +1,104 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Users\\jake\\WebstormProjects\\happy-pawz\\node_modules\\node\\bin\\node.exe',
+1 verbose cli   'C:\\Users\\jake\\WebstormProjects\\happy-pawz\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'n' ]
+2 info using npm@3.10.10
+3 info using node@v11.12.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData n
+8 silly fetchNamedPackageData n
+9 silly mapToRegistry name n
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'n',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   escapedName: 'n',
+12 silly mapToRegistry   name: 'n',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/n
+14 verbose request uri https://registry.npmjs.org/n
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 4:13:07 PM
+17 verbose request id 44d330942106c9c3
+18 verbose etag W/"e00eca44285165385e57cb4f97cf587b"
+19 verbose lastModified Fri, 29 Mar 2019 07:23:33 GMT
+20 http request GET https://registry.npmjs.org/n
+21 http 304 https://registry.npmjs.org/n
+22 verbose headers { date: 'Tue, 02 Apr 2019 20:13:07 GMT',
+22 verbose headers   connection: 'keep-alive',
+22 verbose headers   'set-cookie':
+22 verbose headers    [ '__cfduid=d4dae6b85a3946ff343631105dcf239581554235987; expires=Wed, 01-Apr-20 20:13:07 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+22 verbose headers   'cf-cache-status': 'HIT',
+22 verbose headers   'cache-control': 'max-age=300',
+22 verbose headers   'cf-ray': '4c15762b6ebe8309-ATL',
+22 verbose headers   etag: '"e00eca44285165385e57cb4f97cf587b"',
+22 verbose headers   'expect-ct':
+22 verbose headers    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+22 verbose headers   'last-modified': 'Fri, 29 Mar 2019 07:23:33 GMT',
+22 verbose headers   vary: 'accept-encoding, accept',
+22 verbose headers   'x-amz-meta-rev': '367-e8780b771d40bfc04da5431fa280d749',
+22 verbose headers   server: 'cloudflare' }
+23 silly get cb [ 304,
+23 silly get   { date: 'Tue, 02 Apr 2019 20:13:07 GMT',
+23 silly get     connection: 'keep-alive',
+23 silly get     'set-cookie':
+23 silly get      [ '__cfduid=d4dae6b85a3946ff343631105dcf239581554235987; expires=Wed, 01-Apr-20 20:13:07 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+23 silly get     'cf-cache-status': 'HIT',
+23 silly get     'cache-control': 'max-age=300',
+23 silly get     'cf-ray': '4c15762b6ebe8309-ATL',
+23 silly get     etag: '"e00eca44285165385e57cb4f97cf587b"',
+23 silly get     'expect-ct':
+23 silly get      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+23 silly get     'last-modified': 'Fri, 29 Mar 2019 07:23:33 GMT',
+23 silly get     vary: 'accept-encoding, accept',
+23 silly get     'x-amz-meta-rev': '367-e8780b771d40bfc04da5431fa280d749',
+23 silly get     server: 'cloudflare' } ]
+24 verbose etag https://registry.npmjs.org/n from cache
+25 verbose get saving n to C:\Users\jake\AppData\Roaming\npm-cache\registry.npmjs.org\n\.cache.json
+26 verbose correctMkdir C:\Users\jake\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+27 silly install normalizeTree
+28 silly loadCurrentTree Finishing
+29 silly loadIdealTree Starting
+30 silly install loadIdealTree
+31 silly cloneCurrentTree Starting
+32 silly install cloneCurrentTreeToIdealTree
+33 silly cloneCurrentTree Finishing
+34 silly loadShrinkwrap Starting
+35 silly install loadShrinkwrap
+36 silly loadShrinkwrap Finishing
+37 silly loadAllDepsIntoIdealTree Starting
+38 silly install loadAllDepsIntoIdealTree
+39 silly rollbackFailedOptional Starting
+40 silly rollbackFailedOptional Finishing
+41 silly runTopLevelLifecycles Finishing
+42 silly install printInstalled
+43 verbose stack Error: Unsupported platform for n@3.0.0: wanted {"name":"n","description":"Interactively Manage All Your Node Versions","version":"3.0.0","author":{"name":"TJ Holowaychuk","email":"tj@vision-media.ca"},"homepage":"https://github.com/tj/n","bugs":{"url":"https://github.com/tj/n/issues"},"contributors":[{"name":"Travis Webb","email":"me@traviswebb.com","url":"tjw.io"},{"name":"Nimit Kalra","email":"me@nimit.io","url":"http://nimit.io"},{"name":"Troy Connor","email":"troy0820@gmail.com","url":"https://github.com/troy0820"}],"keywords":["nvm","node","version","manager","switcher","node","binary","env"],"bin":{"n":"./bin/n"},"repository":{"type":"git","url":"git://github.com/tj/n.git"},"preferGlobal":true,"os":["!win32"],"engines":{"node":"*"},"license":"MIT","gitHead":"593241042b4eed4f1afd659fa608b7858fa61102","_id":"n@3.0.0","_nodeVersion":"11.12.0","_npmVersion":"6.7.0","dist":{"integrity":"sha512-f4JY+0W0/kJhHwTKFnFZNf7QYHO+8t78q0JfVG5Jez2sH7ITnfzNiqyOQUY7H8uGac9pNgJ8cEMiKNGeKfV7Bg==","shasum":"1ad525c37ebf89ce13292acb9966fa0dd3ef085a","tarball":"https://registry.npmjs.org/n/-/n-3.0.0.tgz","fileCount":5,"unpackedSize":29257,"npm-signature":"-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJcncfyCRA9TVsSAnZWagAA7BEP/RqzFNt/379Rv96FIsu/\nOt3GzbUgw09/1gD10trrKpQn5IfW1/16Mno1v4QHq6qOTD+LE06a3+gMi83C\nMcmnSWTDofr8zRvE0RlHj8wQSK0yyY9QzngpMTutKWuj05fnja+jiGScMelH\n1Zd0zeViUoKSetONVEPghPtmeDFTsUkDfi6H3rmDwOmBqCnrD0UyqohFE4+Y\nw5hBt8kto47MfNacsfMcK9UwIanTJ5qtFkI/65wcs0QUPQbmIEK7u5dHfOJ3\nnnfV7NCAWguRQoh8qEyf4cjYQC9hxkQtMI4oDpurfq6Q+IHDc6IjaXsZEvUT\nzAVSnvJnaBHWnhyhaIvqGssnL8qiHPZGqfnnOA2qNdf2iGwf4oDNwVWUfQ/j\n9Kz+C26jMJ40lwmeJ78mDE05tmfyUGI+6fmunr6L3Ie2jzlKk+Qg2n8ywATZ\nu9AapPRZ5kekP2Dz0LuOC0WusNOKg2YXc5zEUtDyFYwAxwfSVHqSG1oXDOPE\nVUQMeV4fGhxFoLfaMTxCVXpAq2YzoLbEgpPmc9Uw8LTJQK5ivc1sNsgfrd7H\nV5N/2ONcPnRVQ8BL2s2bP4O004YF7lSwd27X0YPC53D3yAcFa97OToxc7uu6\n1TPocSibUwR9SPJoPnB1aMnKv3WasyDukg9Vz26DNaO7Vobcdt4/CBUgrVKk\nuJ0h\r\n=uJoT\r\n-----END PGP SIGNATURE-----\r\n"},"maintainers":[{"name":"bat","email":"ben@benatkin.com"},{"name":"qw3rtman","email":"me@nimit.io"},{"name":"shadowspawn","email":"npm_j@ruru.gen.nz"},{"name":"tedgaydos","email":"tedgaydos@gmail.com"},{"name":"tjholowaychuk","email":"tj@vision-media.ca"},{"name":"tjwebb","email":"me@traviswebb.com"},{"name":"troy0820","email":"troy0820@gmail.com"}],"_npmUser":{"name":"shadowspawn","email":"npm_j@ruru.gen.nz"},"directories":{},"_npmOperationalInternal":{"host":"s3://npm-registry-packages","tmp":"tmp/n_3.0.0_1553844209622_0.28752762281307165"},"_hasShrinkwrap":false,"_from":"n","_resolved":"https://registry.npmjs.org/n/-/n-3.0.0.tgz","_shasum":"1ad525c37ebf89ce13292acb9966fa0dd3ef085a","_requested":{"raw":"n","scope":null,"escapedName":"n","name":"n","rawSpec":"","spec":"latest","type":"tag"},"_spec":"n","_where":"C:\\Users\\jake\\WebstormProjects\\happy-pawz","_args":[[{"raw":"n","scope":null,"escapedName":"n","name":"n","rawSpec":"","spec":"latest","type":"tag"},"C:\\Users\\jake\\WebstormProjects\\happy-pawz"]],"readme":"ERROR: No README data found!"} (current: {"os":"win32","cpu":"x64"})
+43 verbose stack     at checkPlatform (C:\Users\jake\WebstormProjects\happy-pawz\node_modules\npm\node_modules\npm-install-checks\index.js:45:14)
+43 verbose stack     at thenWarnEngineIssues (C:\Users\jake\WebstormProjects\happy-pawz\node_modules\npm\lib\install\validate-args.js:41:5)
+43 verbose stack     at C:\Users\jake\WebstormProjects\happy-pawz\node_modules\npm\node_modules\iferr\index.js:13:50
+43 verbose stack     at checkEngine (C:\Users\jake\WebstormProjects\happy-pawz\node_modules\npm\node_modules\npm-install-checks\index.js:24:10)
+43 verbose stack     at module.exports.isInstallable (C:\Users\jake\WebstormProjects\happy-pawz\node_modules\npm\lib\install\validate-args.js:38:3)
+43 verbose stack     at Array.<anonymous> (C:\Users\jake\WebstormProjects\happy-pawz\node_modules\npm\node_modules\slide\lib\bind-actor.js:15:8)
+43 verbose stack     at LOOP (C:\Users\jake\WebstormProjects\happy-pawz\node_modules\npm\node_modules\slide\lib\chain.js:15:14)
+43 verbose stack     at C:\Users\jake\WebstormProjects\happy-pawz\node_modules\npm\node_modules\slide\lib\chain.js:18:7
+43 verbose stack     at checkSelf (C:\Users\jake\WebstormProjects\happy-pawz\node_modules\npm\lib\install\validate-args.js:46:72)
+43 verbose stack     at Array.<anonymous> (C:\Users\jake\WebstormProjects\happy-pawz\node_modules\npm\node_modules\slide\lib\bind-actor.js:15:8)
+44 verbose pkgid n@3.0.0
+45 verbose cwd C:\Users\jake\WebstormProjects\happy-pawz
+46 error Windows_NT 10.0.16299
+47 error argv "C:\\Users\\jake\\WebstormProjects\\happy-pawz\\node_modules\\node\\bin\\node.exe" "C:\\Users\\jake\\WebstormProjects\\happy-pawz\\node_modules\\npm\\bin\\npm-cli.js" "install" "n"
+48 error node v11.12.0
+49 error npm  v3.10.10
+50 error code EBADPLATFORM
+51 error notsup Unsupported platform for n@3.0.0: wanted {"os":"!win32","arch":"any"} (current: {"os":"win32","arch":"x64"})
+52 error notsup Valid OS:    !win32
+52 error notsup Valid Arch:  any
+52 error notsup Actual OS:   win32
+52 error notsup Actual Arch: x64
+53 verbose exit [ 1, true ]
