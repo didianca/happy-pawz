@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -26,21 +27,21 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    phone:{
+    isOwner: {
+        type: Boolean,
+        default: false
+    },
+    phone: {
         type: String,
         required: true,
         minlength: 5,
         maxlength: 50
     },
-    pet:{
-      type: String,
-      required:true,
-      minlength:3,
-      maxlength:50
-    },
     date: {type: Date, default: Date.now}
 });
-
+userSchema.methods.return = function () {
+    if (this.createdOwner===true) this.isOwner=true ;
+};
 const User = mongoose.model('User', userSchema);
 
 function validateUser(user) {
@@ -48,8 +49,7 @@ function validateUser(user) {
         name: Joi.string().min(4).max(50).required(),
         email: Joi.string().min(5).max(255).required().email(),
         password: Joi.string().min(5).max(255).required(),
-        phone:Joi.string().min(5).max(50).required(),
-        pet:Joi.string().min(5).max(50).required()
+        phone: Joi.string().min(5).max(50).required()
     };
     return Joi.validate(user, schema);
 }
