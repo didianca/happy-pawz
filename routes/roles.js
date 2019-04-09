@@ -6,31 +6,35 @@ const validateObjectId = require('../middleware/validateObjectId');
 
 //GET all
 router.get('/', async (req, res) => {
-    const roles = await Role.find().sort('title');
+    const roles = await Role.find().sort({qualificationRate:-1});
     res.send(roles);
 });
 //POST new
 router.post('/',validate(validateRole),async (req, res) => {
-    const role = new Role({title: req.body.title, isQualified: req.body.isQualified});
+    let role= await Role.findOne({title:req.body.title});
+    if (role) return res.status(400).send(`Role \"${req.body.title}\" already registered.`);
+
+     role = new Role({title: req.body.title});
+
+     role.setQualificationRate();
     await role.save();
 
     res.send(role);
 });
 
 //UPDATE existing
-router.put('/:id',validate(validateRole), async (req, res) => {
-    const role = await Role.findByIdAndUpdate(req.params.id, {
-        title: req.body.title,
-        isQualified: req.body.isQualified
-    }, {new: true});
-    if (!role) return res.status(404).send('The role with the given ID was not found.');
+router.put('/:id',async(req,res)=>{
+     const role = await Role.findOneAndUpdate({_id:req.params.id},{
+        title:req.body.title
+    },{new:true});
+    role.setQualificationRate();
 
-    res.send(role);
+    if(!role) res.status(400).send('No role with the give ID found.');
+    res.send(role)
 });
-
 //DEL existing
 router.delete('/:id', async (req, res) => {
-    const role = await Role.findByIdAndDelete(req.params.id);
+    const role = await Role.findOneAndDelete({_id:req.params.id});
     if (!role) return res.status(404).send('The role with the given ID was not found.');
 
     res.send(role);
@@ -38,7 +42,7 @@ router.delete('/:id', async (req, res) => {
 
 //GET one
 router.get('/:id', validateObjectId,async (req, res) => {
-    const role = await Role.findById(req.params.id);
+    const role = await Role.findOne({_id:req.params.id});
     if (!role) return res.status(404).send('The role with the given ID was not found');
     res.send(role);
 });

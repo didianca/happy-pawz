@@ -2,12 +2,18 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 
 const ownerSchema = new mongoose.Schema({
-    userName: {
+    user: {
         type: new mongoose.Schema({
             name:{
                 type: String,
                 required: true,
                 minlength: 4,
+                maxlength: 50
+            },
+            phone: {
+                type: String,
+                required: true,
+                minlength: 5,
                 maxlength: 50
             }
         })
@@ -28,9 +34,8 @@ const Owner = mongoose.model('Owner', ownerSchema);
 
 function validateOwner(owner) {
     const schema = {
-        userName:Joi.objectId().required(),
-        address: Joi.string().min(10).max(255).required(),
-       // pets: Joi.array().items(Joi.string().min(1)).required(),
+        user:Joi.objectId().required(),
+        address: Joi.string().min(10).max(255).required()
     };
 
     return Joi.validate(owner, schema);

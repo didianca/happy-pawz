@@ -1,61 +1,96 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const {employeeSchema} = require('./employee');
 
 const roomSchema = new mongoose.Schema({
-    type: {
+    size: {
         type: String,
         required: true,
         minlength: 5,
-        maxlength: 255
+        maxlength: 255//only 2 types of single and 2 of multiple
     },
-    caretaker:{
-        type: employeeSchema,
-        required:true
+    caretaker: {
+        type: new mongoose.Schema({
+            name: {
+                type: String,
+                required: true,
+                minlength: 5,
+                maxlength: 255
+            },
+            phone: {
+                type: String,
+                minlength: 5,
+                maxlength: 50,
+                required: true
+            }
+        }),
+        required: true
     },
-    maid:{
-        type: employeeSchema,
-        required:true
+    maid: {
+        type: new mongoose.Schema({
+            name: {
+                type: String,
+                required: true,
+                minlength: 5,
+                maxlength: 255
+            },
+            phone: {
+                type: String,
+                minlength: 5,
+                maxlength: 50,
+                required: true
+            }
+        }),
+        required: true
     },
-    numberOfAvailable:{
-        type:Number,
+    numberOfAvailable: {
+        type: Number,
+        required: true,
+        default: 10
+    },
+    dailyRentalRate: {
+        type: Number,
+        required: true,
+        min: 100
+    },
+    level: {
+        type: Number,
         required: true,
         min: 0,
-        max: 10
+        max: 3//only 2 ground floor and 2 first floor
     },
-    dailyRentalRate:{
-        type:Number,
-        required: true,
-        min: 50, //multiples //no outdoor access //last half of lvl
-        //75 //multiples//no outdoor access //first half of lvl
-        //125 //singles //no outdoor access // last half lvl
-        //150//singles // no outdoor access //first half of lvl
-        //200//multiples// outdoor access // first lvl
-        max: 250 //singles// outdoor access // first lvl
-    },
-    level:{
-      type: Number,
-      required:true,
-      min: 0,
-      max: 3
-    },
-    outdoorAccess:{
+    outdoorAccess: {
         type: Boolean,
         default: false
     },
     date: {type: Date, default: Date.now}
 });
-const Room = mongoose.model('Room',roomSchema);
+
+roomSchema.methods.setOutdoorAccess = function () {
+    if (this.level === 0) return this.outdoorAccess = true
+};
+roomSchema.methods.setDailyRentalRate = function () {
+    if (this.outdoorAccess === true && this.size === "single") return this.dailyRentalRate = 250;
+    if (this.outdoorAccess === true && this.size === "multiple") return this.dailyRentalRate = 200;
+    if (this.outdoorAccess === false && this.size === "single") return this.dailyRentalRate = 150;
+    if (this.outdoorAccess === false && this.size === "multiple") return this.dailyRentalRate = 100;
+};
+
+
+const Room = mongoose.model('Room', roomSchema);
 
 function validateRoom(room) {
     const schema = {
-        type: Joi.string().min(5).max(255).required(),
-        caretakerId:Joi.objectId().required(),
-        maidId:Joi.objectId().required(),
-        numberOfAvailable: Joi.number().min(0).max(10).required(),
-        dailyRentalRate: Joi.number().min(50).max(250).required(),
-        level: Joi.number().min(0).max(3).required(),
-        outdoorAccess: Joi.boolean().required()
+        size: Joi.string().min(5).max(255).required(),
+        caretakerId: Joi.objectId().required(),
+        maidId: Joi.objectId().required(),
+        level: Joi.number().min(0).max(3).required()
+    };
+    return Joi.validate(room, schema);
+}
+function validateRoomUpdate(room){
+    const schema = {
+        caretakerId: Joi.objectId().required(),
+        maidId: Joi.objectId().required()
     };
     return Joi.validate(room, schema);
 }
@@ -63,3 +98,4 @@ function validateRoom(room) {
 exports.roomSchema = roomSchema;
 exports.Room = Room;
 exports.validateRoom = validateRoom;
+exports.validateRoomUpdate = validateRoomUpdate;

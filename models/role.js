@@ -6,21 +6,30 @@ const roleSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 4,
-        maxlength: 50
+        maxlength: 50,
+        unique:true
     },
-    isQualified:{
-        type: Boolean,
-        default: false
+    qualificationRate:{
+        type: Number,
+        default: 0
     },
     dateRegistered: {type: Date, default: Date.now}
 });
-const Role = mongoose.model('Role', roleSchema);
 
+
+roleSchema.methods.setQualificationRate = function () {
+    if(this.title ==='doctor') return this.qualificationRate = 50;
+    if(this.title ==='lawyer') return this.qualificationRate = 50;
+    if(this.title==='accountant') return this.qualificationRate = 25;
+    if(this.title==='medical assistant') return this.qualificationRate = 25;
+    return this.qualificationRate
+};
+
+const Role = mongoose.model('Role', roleSchema);
 
 function validateRole(role) {
     const schema = {
-        title: Joi.string().min(4).max(50).required(),
-        isQualified: Joi.boolean().required()
+        title: Joi.string().min(4).max(50).required()
     };
 
     return Joi.validate(role, schema);

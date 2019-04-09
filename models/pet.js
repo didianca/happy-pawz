@@ -8,6 +8,13 @@ const petSchema = new mongoose.Schema({
         minlength: 1,
         maxlength: 50
     },
+    microChip: {
+        type: String,
+        required: true,
+        minlength: 10,
+        maxlength:50,
+        unique:true
+    },
     ownerInfo: {
         type: new mongoose.Schema({
             name: {
@@ -15,13 +22,9 @@ const petSchema = new mongoose.Schema({
                 required: true,
                 minlength: 4,
                 maxlength: 50
-            },
-            pets: {
-                type: Array,
-                required: true,
-                min: 1
             }
-        })
+        }),
+        required:true
     },
     petRace: {
         type: String,
@@ -41,7 +44,7 @@ const petSchema = new mongoose.Schema({
     },
     castrated: {
         type: Boolean,
-        required: true
+        default:false
     },
     petColor: {
         type: String,
@@ -57,19 +60,25 @@ const petSchema = new mongoose.Schema({
     },
     healthy: {
         type: Boolean,
-        required: true
+        default:true
     },
-    isAccomodated: {
+    isAccommodated: {
         type: Boolean,
         default: false
     },
-    date: {type: Date, default: Date.now}
+    dateRegistered: {type: Date, default: Date.now}
 });
 const Pet = mongoose.model('Pet', petSchema);
+
+//petSchema.methods.something=function () {
+  //needs to be called inside of the end point it'll be used in
+ //calculate age
+//}
 
 function validatePet(pet) {
     const schema = {
         name: Joi.string().min(1).max(50).required(),
+        microChip: Joi.string().min(10).max(50).required(),
         ownerInfo: Joi.objectId().required(),
         petRace: Joi.string().min(3).max(50).required(),
         breed: Joi.string().min(5).max(50).required(),

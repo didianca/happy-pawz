@@ -39,9 +39,6 @@ const userSchema = new mongoose.Schema({
     },
     date: {type: Date, default: Date.now}
 });
-userSchema.methods.return = function () {
-    if (this.createdOwner===true) this.isOwner=true ;
-};
 const User = mongoose.model('User', userSchema);
 
 function validateUser(user) {

@@ -9,7 +9,7 @@ const {Role} = require('../models/role');
 router.get('/', async (req, res) => {
     const employees = await Employee
         .find()
-        .sort("role.title");
+        .sort("-salary");
     res.send(employees);
 });
 
@@ -23,12 +23,11 @@ router.post('/',validate(validateEmployee), async (req, res) => {
         role:{
             _id: role._id,
             title: role.title,
-            isQualified:role.isQualified
+            qualificationRate:role.qualificationRate
         },
-        phone:req.body.phone,
-        salary:req.body.salary,
-        qualificationRate: req.body.qualificationRate
+        phone:req.body.phone
     });
+    employee.setSalary();
     await employee.save();
 
     res.send(employee);
@@ -39,16 +38,14 @@ router.put('/:id', validate(validateEmployee),async (req, res) => {
     const role = await Role.findOne({_id : req.body.roleId});
     if(!role) return res.status(400).send('Invalid role...');
 
-    const employee = await Employee.findByIdAndUpdate(req.params.id, {
+    const employee = await Employee.findOneAndUpdate({_id:req.params.id}, {
         name: req.body.name,
         role:{
             _id: role._id,
             title: role.title,
-            isQualified: role.isQualified
+            qualificationRate: role.qualificationRate
         },
-        phone:req.body.phone,
-        salary:req.body.salary,
-        qualificationRate: req.body.qualificationRate
+        phone:req.body.phone
     }, {new: true});
     if (!employee) return res.status(404).send('The employee with the given ID was not found.');
     res.send(employee);
@@ -56,7 +53,7 @@ router.put('/:id', validate(validateEmployee),async (req, res) => {
 
 //DEL existing
 router.delete('/:id', async (req, res) => {
-    const employee = await Employee.findByIdAndDelete(req.params.id);
+    const employee = await Employee.findOneAndUpdate({_id:req.params.id});
     if (!employee) return res.status(404).send('The employee with the given ID was not found.');
     res.send(employee);
 });

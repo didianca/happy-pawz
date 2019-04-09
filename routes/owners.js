@@ -5,7 +5,8 @@ const router = express.Router();
 const {User} = require('../models/user');
 const Fawn = require('fawn');
 const mongoose = require('mongoose');
-const _ = require('lodash');
+//mustn't send owner in the response cuz it contains user id
+
 
 Fawn.init(mongoose);
 
@@ -18,13 +19,13 @@ router.get('/', async (req, res) => {
 });
 //POST new
 router.post('/',validate(validateOwner), async (req, res) => {
-    const user = await User.findOne({_id : req.body.userName});
+    const user = await User.findOne({_id : req.body.user});
     if(!user) return res.status(400).send('Invalid user...');
 
     if(user.isOwner) return res.status(400).send('You have already become an owner.');
 
     const owner = new Owner({
-        userName:{
+        user:{
             _id: user._id,
             name: user.name,
             phone: user.phone
@@ -39,7 +40,7 @@ router.post('/',validate(validateOwner), async (req, res) => {
                 $set: {isOwner: true},
             })
             .run();
-        res.send(_.pick(owner,['_id','userName.name','userName.phone','address','dateRegistered']));
+        res.send(owner);
     }catch (e) {
         res.status(500).send(e.message); //something went wrong
     }
@@ -47,36 +48,32 @@ router.post('/',validate(validateOwner), async (req, res) => {
 
 //PUT existing
 router.put('/:id',validate(validateOwner), async (req, res) => {
-    const user = await User.findOne({_id : req.body.userName});
+    const user = await User.findOne({_id : req.body.user});
     if(!user) return res.status(400).send('Invalid user...');
 
-    let petNames=req.body.pets;
-    petNames.forEach((elem)=>{
-        return elem
-    });
-    const owner = await Owner.findByIdAndUpdate(req.params.id, {
-        userName:{
+    const owner = await Owner.findOneAndUpdate({_id:req.params.id}, {
+        user:{
             _id: user._id,
-            name: user.name
+            name: user.name,
+            phone: user.phone
         },
-        pets:petNames,
         address: req.body.address
     }, {new: true});
     if (!owner) return res.status(404).send('The owner object with the given ID was not found.');
 
-    res.send(_.pick(owner,['userName.name','pets','address','dateRegistered']));
+    res.send(owner);
 });
 
 //DELETE existing
 router.delete('/:id', async (req, res) => {
-    const owner = await Owner.findByIdAndDelete(req.params.id);
+    const owner = await Owner.findOneAndDelete({_id:req.params.id});
     if (!owner) return res.status(404).send('The owner object with the given ID was not found.');
-    res.send(_.pick(owner,['userName.name','pets','address','dateRegistered']));
+    res.send(owner);
 });
 //GET existing
 router.get('/:id', async (req, res) => {
-    const owner = await Owner.findById(req.params.id);
+    const owner = await Owner.findOne({_id:req.params.id});
     if (!owner) return res.status(404).send('The owner object with the given ID was not found');
-    res.send(_.pick(owner,['userName.name','pets','address','dateRegistered']));
+    res.send(owner);
 });
 module.exports =router;

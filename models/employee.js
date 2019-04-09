@@ -1,7 +1,5 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const {roleSchema} = require('./role');
-
 
 const employeeSchema = new mongoose.Schema({
     name: {
@@ -11,7 +9,18 @@ const employeeSchema = new mongoose.Schema({
         maxlength: 255
     },
     role: {
-        type: roleSchema,
+        type: new mongoose.Schema({
+            title:{
+                type: String,
+                required: true,
+                minlength: 4,
+                maxlength: 50
+            },
+            qualificationRate:{
+                type: Number,
+                default: 0
+            }
+        }),
         required: true
     },
     phone: {
@@ -23,26 +32,23 @@ const employeeSchema = new mongoose.Schema({
     salary: {
         type: Number,
         required: true,
-        min: 3000
-    },
-    qualificationRate: {
-        type: Number,
-        required: true,
-        min: 0,
-        max: 50 //0% for non-qualified, 25% for accountants and 50% for docs
+        default:30000
     },
     dateRegistered: {type: Date, default: Date.now}
 });
-const Employee = mongoose.model('Employee', employeeSchema);
 
+employeeSchema.methods.setSalary=function () {
+  const salaryDiff = (this.role.qualificationRate/100) * this.salary;
+    this.salary = this.salary + salaryDiff
+};
+
+const Employee = mongoose.model('Employee', employeeSchema);
 
 function validateEmployee(employee) {
     const schema = {
         name: Joi.string().min(5).max(255).required(),
         roleId: Joi.objectId().required(),
-        phone: Joi.string().min(5).max(50).required(),
-        salary: Joi.number().min(3000).required(),
-        qualificationRate: Joi.number().min(0).required()
+        phone: Joi.string().min(5).max(50).required()
     };
     return Joi.validate(employee, schema);
 }
