@@ -5,10 +5,10 @@ const console = new winston.transports.Console();
 
 winston.add(console);
 
-require('./startup/logging')();
-require('./startup/routes')(app);
-require('./startup/db')();
-require('./startup/validation')();
+require('./api/startup/logging')();
+require('./api/startup/routes')(app);
+require('./api/startup/db')();
+require('./api/startup/validation')();
 
 //PORT
 const port = process.env.PORT || 5000;
