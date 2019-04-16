@@ -50,7 +50,6 @@ nav ul li input:hover {
     color: #779BE8;
     border: 2px solid #C3E88D;
     box-sizing: content-box;
-    padding: 20px;
 
 }
 input[type=text] {
@@ -82,7 +81,6 @@ input[type=text]:focus {
     border-bottom: 1px solid #C3E88D;
     color: #779BE8;
     box-sizing: content-box;
-    padding: 20px;
 }
 input[type=password]:focus {
     outline: none;
@@ -94,7 +92,6 @@ input[type=password]:focus {
     border-bottom: 1px solid #C3E88D;
     color: #779BE8;
     box-sizing: content-box;
-    padding: 20px;
 }
 p{
     color: #D1A5ED;
@@ -111,17 +108,18 @@ div#authentication-box{
 div#button{
     position: absolute;
     top: 75%;
-    left:45%;
-    width:30%;
+    left:47%;
+    width: fit-content;
     height: 200px;
 }
 button{
+    position: relative;
     outline: transparent;
     color: #D1A5ED;
     font-family:'Montserrat',sans-serif;
     font-size:16px;
     background: transparent;
-    width: 40%;
+    width: fit-content;
     height: 50px;
     border: transparent;
 }

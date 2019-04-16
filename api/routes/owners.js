@@ -45,7 +45,6 @@ router.post('/',validate(validateOwner), async (req, res) => {
         res.status(500).send(e.message); //something went wrong
     }
 });
-
 //PUT existing
 router.put('/:id',validate(validateOwner), async (req, res) => {
     const user = await User.findOne({_id : req.body.user});
@@ -63,7 +62,6 @@ router.put('/:id',validate(validateOwner), async (req, res) => {
 
     res.send(owner);
 });
-
 //DELETE existing
 router.delete('/:id', async (req, res) => {
     const owner = await Owner.findOneAndDelete({_id:req.params.id});
