@@ -1,0 +1,25 @@
+doctype html
+html
+    head
+        link(rel='stylesheet', href='../css/signup.css')
+        script(src='../scripts/signup.js')
+    body
+        div
+            canvas#world
+        div#authentication-box
+            nav
+                ul
+                    li#username
+                        p Name:
+                        input.username(type="text" placeholder="Name" autocomplete="on")
+                    li#e-mail
+                        p E-mail:
+                        input.e-mail(type="text" placeholder="E-mail" autocomplete="on")
+                    li#phone
+                        p Phone:
+                        input.phone(type="text" placeholder="phone" autocomplete="on")
+                    li#password
+                        p Password:
+                        input.password(type="password" placeholder="Password")
+        div#button
+            button.btn.btn-primary(type='submit') Sign up
