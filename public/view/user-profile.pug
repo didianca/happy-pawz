@@ -1,0 +1,36 @@
+doctype html
+html
+    head
+        link(rel='stylesheet', href='../css/user-profile.css')
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+        script(src='../scripts/user-profile.js')
+    body
+        .profile
+            .photo
+                img(src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/user.png")
+            .content
+                .text
+                    -let message="User Name"
+                    h3=message
+                    -let n="2019"
+                    h6='Member since ' + n
+                .btn
+                    span
+            .box
+                button(type="button" )
+                    a.fa(href="#")
+                        img(src="https://image.flaticon.com/icons/png/128/109/109232.png")
+                button(type="button" )
+                    a.fa(href="#")
+                        img(src="http://www.acoustic-corner.com/images/icons/house.png")
+                button(type="button" )
+                    a.fa(href="#")
+                        img(src="http://icons.iconarchive.com/icons/iconsmind/outline/256/Tie-2-icon.png")
+                button(type="button" )
+                    a.fa(href="#")
+                        img(src="https://image.flaticon.com/icons/png/128/522/522575.png")
+                button(type="button" )
+                    a.fa(href="#")
+                        img(src="https://image.flaticon.com/icons/png/128/61/61456.png")
+
+
