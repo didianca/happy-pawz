@@ -11,7 +11,10 @@ router.get('/', async (req, res) => {
     const pets = await Pet
         .find()
         .sort({name: 1});
-    res.send(pets);
+    const petsList= [];
+    petsList.push(pets);
+    res.render('petsList',{title: 'Happy Pawz',message: `${petsList[0]}`})
+    //res.send(pets);
 });
 
 //POST new
