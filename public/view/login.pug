@@ -1,19 +1,20 @@
 doctype html
 html
     head
-        link(rel='stylesheet', href='../css/signup.css')
+        link(rel='stylesheet', href='../css/login.css')
         script(src='../scripts/signup.js')
     body
         div
             canvas#world
         div#authentication-box
-            form(method= 'POST', action='../routes/login')
-                ul
-                    li#e-mail
-                        p E-mail:
-                        input.e-mail(type="text" placeholder="E-mail" autocomplete="on")
-                    li#password
-                        p Password:
-                        input.password(type="password" placeholder="Password")
-                div#button
-                    button.btn.btn-primary(type='submit') Sign up
+            form(method= 'POST', action='http://localhost:5000/api/auth')
+                nav
+                    ul
+                        li#email
+                            p E-mail:
+                            input.email(type="text" placeholder="E-mail" autocomplete="on")
+                        li#password
+                            p Password:
+                            input.password(type="password" placeholder="Password")
+                    div#button
+                        button.btn.btn-primary(type='submit') Login
