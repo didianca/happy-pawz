@@ -4,8 +4,14 @@ const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
+const auth  = require('../middleware/auth');
 
 
+//get the logged in user
+router.get('/me',[auth],async (req,res)=>{
+    const user = await User.findOne({_id:req.user._id}).select('-password');
+    res.send(user)
+});
 //SIGN UP
 router.post('/', validate(validateUser),async (req, res) => {
     let user = await User.findOne({email: req.body.email});
@@ -16,7 +22,9 @@ router.post('/', validate(validateUser),async (req, res) => {
     user.password = await bcrypt.hash(user.password,salt);
     await user.save();
 
-    res.send( _.pick(user,['name','email','phone']));
+    const token = user.generateAuthToken();
+    res.header('x-auth-token',token).send( _.pick(user,['name','email','phone']));
 });
+
 
 module.exports = router;

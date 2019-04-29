@@ -5,9 +5,10 @@ const {Pet} = require('../models/pet');
 const {Rental} = require('../models/rental');
 const Joi = require('joi');
 const validate = require('../middleware/validate');
+const auth  = require('../middleware/auth');
 
 //modify the existing rental
-router.post('/', validate(validateCheckout), async (req, res) => {
+router.post('/',[auth, validate(validateCheckout)], async (req, res) => {
     const rental = await Rental.lookup(req.body.ownerId, req.body.roomId, req.body.petId);
 
     if (!rental) return res.status(404).send("The rental was not found");
@@ -22,7 +23,7 @@ router.post('/', validate(validateCheckout), async (req, res) => {
     await Pet.updateOne({_id: rental.pet._id}, {
         $set: {isAccommodated: false}
     });
-
+    res.send(rental);
 });
 
 function validateCheckout(req) {

@@ -6,7 +6,7 @@ const {User} = require('../models/user');
 const Fawn = require('fawn');
 const mongoose = require('mongoose');
 //mustn't send owner in the response cuz it contains user id
-
+const auth  = require('../middleware/auth');
 
 Fawn.init(mongoose);
 
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     res.send(owner);
 });
 //POST new
-router.post('/',validate(validateOwner), async (req, res) => {
+router.post('/',[auth,validate(validateOwner)], async (req, res) => {
     const user = await User.findOne({_id : req.body.user});
     if(!user) return res.status(400).send('Invalid user...');
 
@@ -46,7 +46,7 @@ router.post('/',validate(validateOwner), async (req, res) => {
     }
 });
 //PUT existing
-router.put('/:id',validate(validateOwner), async (req, res) => {
+router.put('/:id',[auth,validate(validateOwner)], async (req, res) => {
     const user = await User.findOne({_id : req.body.user});
     if(!user) return res.status(400).send('Invalid user...');
 
@@ -63,7 +63,7 @@ router.put('/:id',validate(validateOwner), async (req, res) => {
     res.send(owner);
 });
 //DELETE existing
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth,async (req, res) => {
     const owner = await Owner.findOneAndDelete({_id:req.params.id});
     if (!owner) return res.status(404).send('The owner object with the given ID was not found.');
     res.send(owner);
@@ -74,4 +74,5 @@ router.get('/:id', async (req, res) => {
     if (!owner) return res.status(404).send('The owner object with the given ID was not found');
     res.send(owner);
 });
+
 module.exports =router;

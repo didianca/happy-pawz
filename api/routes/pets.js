@@ -4,6 +4,7 @@ const {Pet, validatePet} = require('../models/pet');
 const {Owner} = require('../models/owner');
 const validate = require('../middleware/validate');
 const Fawn = require('fawn');
+const auth  = require('../middleware/auth');
 
 
 //GET all
@@ -13,12 +14,11 @@ router.get('/', async (req, res) => {
         .sort({name: 1});
     const petsList= [];
     petsList.push(pets);
-    res.render('petsList',{title: 'Happy Pawz',message: `${petsList[0]}`})
-    //res.send(pets);
+    res.send(pets);
 });
 
 //POST new
-router.post('/', validate(validatePet), async (req, res) => {
+router.post('/',[auth, validate(validatePet)], async (req, res) => {
     const owner = await Owner.findOne({_id: req.body.ownerInfo});
     if (!owner) return res.status(400).send('Invalid owner...');
 
@@ -56,7 +56,7 @@ router.post('/', validate(validatePet), async (req, res) => {
 });
 
 //PUT existing
-router.put('/:id', validate(validatePet), async (req, res) => {
+router.put('/:id', [auth ,validate(validatePet)], async (req, res) => {
     const owner = await Owner.findOne({_id: req.body.ownerInfo});
     if (!owner) return res.status(400).send('Invalid owner...');
 
@@ -82,7 +82,7 @@ router.put('/:id', validate(validatePet), async (req, res) => {
 });
 
 //DEL existing
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const pet = await Pet.findOneAndDelete(req.params.id);
     if (!pet) return res.status(404).send('The pet with the given ID was not found.');
     res.send(pet);

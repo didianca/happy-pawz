@@ -6,17 +6,17 @@ const validate = require('../middleware/validate');
 const Fawn = require('fawn');
 const express = require('express');
 const router = express.Router();
+const auth  = require('../middleware/auth');
 
-//GET all
-router.get('/', async (req, res) => {
-    const rentals = await Rental
-        .find()
-        .sort({dateOut: -1});
-    res.send(rentals);
+//GET api/rentals/:id
+router.get('/:id', async (req, res) => {
+    const rental = await Rental.findById(req.params.id);
+    if (!rental) return res.status(404).send('The rental object with the given ID was not found');
+    res.send(rental);
 });
 
 //POST new
-router.post('/', validate(validateRental), async (req, res) => {
+router.post('/',[auth, validate(validateRental)], async (req, res) => {
     const owner = await Owner.findOne({_id: req.body.ownerId});
     if (!owner) return res.status(400).send('Invalid owner...');
 
