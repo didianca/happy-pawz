@@ -1,0 +1,151 @@
+html {
+    height: 100%;
+}
+body {
+    margin:0;
+    padding:0;
+    background: #20292E;
+    font-family:'Montserrat',sans-serif;
+    font-size:12px;
+}
+
+ul {
+    margin:0;
+    padding:0;
+    text-decoration:none;
+    list-style:none;
+}
+li {
+    padding:0;
+    margin:0;
+}
+form {
+    text-align:center;
+    width:100%;
+    position:relative;
+    height:auto;
+    overflow:hidden;
+    background:none;
+}
+form ul {
+    text-align:center;
+}
+form ul li {
+    display:inline-block;
+}
+form ul li input {
+    color:#C3E88D;
+    display:inline-block;
+    padding:1em 3em;
+    text-decoration:none;
+    border-bottom:2px solid #263238;
+    transition-property: all .2s linear 0s;
+    -moz-transition:all .2s linear 0s;
+    -webkit-transition:all .2s linear 0s;
+    -o-transition:all .2s linear 0s;
+    font-size:16px;
+}
+form ul li input:hover {
+    border-radius: 25px;
+    color: #779BE8;
+    border: 2px solid #C3E88D;
+    box-sizing: content-box;
+
+}
+input[type=text] {
+    background-color: transparent;
+    color: #779BE8;
+    font-family:'Montserrat',sans-serif;
+    font-size:12px;
+    border-top: transparent;
+    border-right: transparent;
+    border-left: transparent;
+    border-bottom-color: #B7C3CA;
+}
+input[type=password] {
+    background-color: transparent;
+    color: #779BE8;
+    font-family:'Montserrat',sans-serif;
+    font-size:12px;
+    border-top: transparent;
+    border-right: transparent;
+    border-left: transparent;
+    border-bottom-color: #B7C3CA;
+}
+input[type=text]:focus {
+    outline: none;
+    border-radius: 10px;
+    border-top: transparent;
+    border-right: transparent;
+    border-left: transparent;
+    border-bottom: 1px solid #C3E88D;
+    color: #779BE8;
+    box-sizing: content-box;
+}
+input[type=password]:focus {
+    outline: none;
+    background-color: transparent;
+    border-radius: 10px;
+    border-top: transparent;
+    border-right: transparent;
+    border-left: transparent;
+    border-bottom: 1px solid #C3E88D;
+    color: #779BE8;
+    box-sizing: content-box;
+}
+p{
+    color: #D1A5ED;
+    font-family:'Montserrat',sans-serif;
+    font-size:12px;
+}
+div#authentication-box{
+    position: absolute;
+    top: 25%;
+    left:35%;
+    width:30%;
+    height: 200px;
+}
+div#button{
+    position: absolute;
+    top: 75%;
+    left:47%;
+    width: fit-content;
+    height: 200px;
+}
+button{
+    position: fixed;
+    bottom: 35px;
+    right:35px;
+    outline: transparent;
+    color: #D1A5ED;
+    font-family:'Montserrat',sans-serif;
+    font-size:16px;
+    background: transparent;
+    height: 40px;
+    width: fit-content;
+    border: transparent;
+}
+button:hover{
+    border-radius: 25px;
+    color: #C3E88D;
+    box-sizing: content-box;
+    border: 2px solid #B7C3CA;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    border-radius: 10px;
+    border-top: transparent;
+    border-right: transparent;
+    border-left: transparent;
+    border-bottom: 1px solid #C3E88D;
+    -webkit-text-fill-color: #779BE8;
+    -webkit-box-shadow: 0 0 0 1000px transparent;
+    transition: background-color 5000s ease-in-out 0s;
+}

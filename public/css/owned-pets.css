@@ -1,0 +1,69 @@
+html {
+    height: 100%;
+}
+body {
+    margin:0;
+    padding:0;
+    background-color: #20292E;
+    font-family:'Montserrat',sans-serif;
+    font-size:12px;
+    height: 100%;
+}
+h2{
+    position: absolute;
+    font-family:'Montserrat',sans-serif;
+    font-size: 24px;
+    color: #D1A5ED;
+    float: left;
+    margin-top: 20px;
+    margin-left: 20px;
+    padding: 10px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    border: 1px solid #B7C3CA;
+    border-radius: 20px;
+}
+h2#title:hover{
+    font-size: 28px;
+    color: #B7C3CA;
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+    box-sizing: content-box;
+}
+div#list-of-pets{
+    float:left;
+    margin-top: 15%;
+    margin-left: 7%;
+    font-family:'Montserrat',sans-serif;
+    font-size: 24px;
+    color: #B7C3CA;
+    background-color: transparent;
+    width: 80%;
+    height: available;
+    border-radius: 25px;
+}
+div#list-of-pets:hover{
+    font-size: 28px;
+    color: #D1A5ED;
+    background-color:#4D575C;
+    border: 1px solid #D1A5ED;
+}
+div#name{
+    position: relative;
+    margin-left:10px;
+    color: #779BE8;
+    text-underline: dotted-heavy;
+}
+div#name:hover{
+    color: #779BE8;
+     text-transform: uppercase;
+}
+div#name{
+    position: relative;
+    margin-left:10px;
+    text-underline: dotted-heavy;
+}
