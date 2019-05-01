@@ -19,21 +19,21 @@ li {
     padding:0;
     margin:0;
 }
-nav {
+form {
     text-align:center;
     width:100%;
     position:relative;
     height:auto;
     overflow:hidden;
-    background:none;
+    background: transparent;
 }
-nav ul {
+form ul {
     text-align:center;
 }
-nav ul li {
+form ul li {
     display:inline-block;
 }
-nav ul li input {
+form ul li input {
     color:#C3E88D;
     display:inline-block;
     padding:1em 3em;
@@ -45,7 +45,7 @@ nav ul li input {
     -o-transition:all .2s linear 0s;
     font-size:16px;
 }
-nav ul li input:hover {
+form ul li input:hover {
     border-radius: 25px;
     color: #779BE8;
     border: 2px solid #C3E88D;
@@ -113,14 +113,16 @@ div#button{
     height: 200px;
 }
 button{
-    position: relative;
+    position: fixed;
+    bottom: 35px;
+    right:35px;
     outline: transparent;
     color: #D1A5ED;
     font-family:'Montserrat',sans-serif;
     font-size:16px;
     background: transparent;
+    height: 40px;
     width: fit-content;
-    height: 50px;
     border: transparent;
 }
 button:hover{
