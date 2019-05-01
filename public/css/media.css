@@ -53,7 +53,6 @@ nav ul li a:hover {
     border-radius: 8px;
     object-fit: cover;
 }
-
 ul {
     list-style: none;
     margin: 0px auto;
@@ -86,4 +85,24 @@ ul {
 
 #photo-gallery {
     width: 100%;
+}
+#edit a{
+    position: fixed;
+    bottom: 35px;
+    right:35px;
+    outline: transparent;
+    color: #D1A5ED;
+    font-family:'Montserrat',sans-serif;
+    font-size:16px;
+    background: transparent;
+    height: fit-content;
+    width: fit-content;
+    border: transparent;
+    padding: 20px;
+}
+#edit a:hover{
+    border-radius: 25px;
+    color: #C3E88D;
+    box-sizing: content-box;
+    border: 2px solid #B7C3CA;
 }

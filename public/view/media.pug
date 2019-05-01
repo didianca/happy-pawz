@@ -2,8 +2,6 @@ doctype html
 html
     head
         link(rel='stylesheet', href='../css/media.css')
-        script( src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
-        script(src='../scripts/media.js')
     body
         div#header
             nav
@@ -17,7 +15,7 @@ html
                     li
                         a(href='./login.html') Login
         div#container
-            //form(method="GET" action="http://localhost:5000/api/media")
+            //form(method="GET" action="http://localhost:5000/api/media") todo: populate pics arr with db info
             -var pictures =["https://i.imgur.com/k9K4gNU.jpg","https://i.imgur.com/bK27rAL.jpg","https://i.imgur.com/KqLZe0h.jpg","https://i.pinimg.com/736x/08/d0/64/08d0649b807ab47ebe027880c9f3b387.jpg","https://i.imgur.com/LmLtGdi.jpg","https://i.imgur.com/1mGL6s3.jpg","https://i.imgur.com/cwkpJiQ.jpg","https://i.imgur.com/WNC0iXo.jpg","https://i.imgur.com/KeYZJ4H.jpg","https://i.imgur.com/gEKnYcC.jpg"]
             div#photos
                 ul#photo-gallery
@@ -25,3 +23,5 @@ html
                         li
                             a(href=val)
                                 img(src=val alt='This is an image')
+            div#edit
+                a(href="#") Edit
