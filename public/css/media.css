@@ -39,7 +39,7 @@ nav ul li a {
     display:inline-block;
     padding:1em 3em;
     text-decoration:none;
-    border-bottom:2px solid #263238;
+    border-bottom:2px solid #00C0AD;
     transition-property: all .2s linear 0s;
     -moz-transition:all .2s linear 0s;
     -webkit-transition:all .2s linear 0s;
@@ -103,7 +103,7 @@ ul {
     bottom: 35px;
     right:35px;
     outline: transparent;
-    color: #D1A5ED;
+    color: #00C0AD;
     font-family:'Montserrat',sans-serif;
     font-size:16px;
     background: transparent;

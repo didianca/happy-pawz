@@ -33,8 +33,8 @@
     outline: -webkit-focus-ring-color auto 5px;
 }
 .file-area input[type=file]:valid + .file-dummy {
-    border-color: rgba(0, 255, 0, 0.4);
-    background-color: rgba(0, 255, 0, 0.3);
+    border-color: #00D3BE;
+    background-color: #00C0AD;
 }
 .file-area input[type=file]:valid + .file-dummy .success {
     display: inline-block;
@@ -113,12 +113,13 @@ label span {
 
 button {
     padding: 8px 30px;
-    background: rgba(255, 255, 255, 0.8);
+    background: #00C0AD;
     color: #20292E;
     text-transform: uppercase;
     font-weight: 600;
     font-size: 11px;
     border: 0;
+    border-radius: 8px;
     text-shadow: 0 1px 2px #fff;
     cursor: pointer;
 }
