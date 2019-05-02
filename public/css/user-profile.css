@@ -6,12 +6,24 @@
 
 body, html {
     margin: 0;
-    background: #ddd;
     color: #7a7b7c;
 }
 
 body {
     font-family: "Raleway", "Microsoft JhengHei", Arial, sans-serif;
+    background: #20292E;
+    background: -moz-linear-gradient(top, #20292E 0%, #009688 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #20292E), color-stop(100%, #009688));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #20292E 0%, #009688 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #20292E 0%, #009688 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #20292E 0%, #009688 100%);
+    /* IE10+ */
+    background: linear-gradient(to bottom, #20292E 0%, #009688 100%);
+    /* W3C */
 }
 
 .profile {
