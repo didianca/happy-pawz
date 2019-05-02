@@ -46,7 +46,7 @@ h2#title:hover{
     border-right: transparent;
     box-sizing: content-box;
 }
-div#list-of-pets{
+div.list-of-pets{
     float:left;
     margin-top: 15%;
     margin-left: 7%;
@@ -58,23 +58,23 @@ div#list-of-pets{
     height: available;
     border-radius: 25px;
 }
-div#list-of-pets:hover{
+div.list-of-pets:hover{
     font-size: 28px;
     color: #D1A5ED;
     background-color:#4D575C;
     border: 1px solid #D1A5ED;
 }
-div#name{
+div.name{
     position: relative;
     margin-left:10px;
     color: #779BE8;
     text-underline: dotted-heavy;
 }
-div#name:hover{
+div.name:hover{
     color: #779BE8;
      text-transform: uppercase;
 }
-div#name{
+div.name{
     position: relative;
     margin-left:10px;
     text-underline: dotted-heavy;
