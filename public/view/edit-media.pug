@@ -1,0 +1,24 @@
+doctype html
+html
+    head
+        link(rel='stylesheet', href='../css/edit-media.css')
+    body
+        form(method="POST" action="#")
+            h1(style={text: strong}) Upload file:
+            div.form-group
+                label(for='title') Title
+                input#title.form-controll(type='text' name='title')
+            div.form-group
+                label(for='title') Caption
+                input#caption.form-controll(type='text' name='caption')
+            div.form-group.file-area
+                label(for='images') Images
+                    span Your images should be at least 400x300
+                input#images(type='file' name='images' required='required' multiple='multiple')
+                div.file-dummy
+                    div.success Success
+                    div.default Please select some files
+            div.form-group
+                button(type='submit') Upload
+        link(href='https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700' rel='stylesheet' type='text/css')
+        a.back-to-article(href='./media.html') back to media
