@@ -1,5 +1,7 @@
 {
   "jwtPrivateKey": "hp_jwtPrivateKey",
   "db": "hp_db",
-  "api": "apiKey"
+  "api": "apiKey",
+  "accessKeyId": "hp_accessKeyId",
+  "secretAccessKey": "hp_secretAccessKey"
 }

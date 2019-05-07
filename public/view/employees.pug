@@ -1,6 +1,35 @@
 doctype html
 html
     head
-        h1 list of employees ('GET')
+        link(rel='stylesheet' href='../css/employees.css')
     body
-        p Any other CRUD op only by admins
+        -
+            const employees = [
+            {name:'Didi',role:'CEO',pic:['00bd56', 'f9fd50']},
+            {name:'Didi',role:'CEO',pic:['26baee', '9fe8fa']},
+            {name:'Didi',role:'CEO',pic:['c7004c', 'ffaaaa']},
+            {name:'Didi',role:'CEO',pic:['8f71ff', '8bffff']},
+            {name:'Didi',role:'CEO',pic:['55968f', '8acbbb']},
+            {name:'Didi',role:'CEO',pic:['226b80', '35b0ab']},
+            {name:'Didi',role:'CEO',pic:['3d6cb9', '00fff0']},
+            {name:'Didi',role:'CEO',pic:['4d3664', 'bab5f6']},
+            {name:'Didi',role:'CEO',pic:['fa4659', 'e9007f']},
+            {name:'Didi',role:'CEO',pic:['00b7c2', '4ef037']},
+            {name:'Didi',role:'CEO',pic:['303481', 'a100ff']},
+            {name:'Didi',role:'CEO',pic:['fc8a15', 'fff6a2']},
+            {name:'Didi',role:'CEO',pic:['f9d00f', 'fbff64']},
+            {name:'Didi',role:'CEO',pic:['295e6a', '4797b1']},
+            {name:'Didi',role:'CEO',pic:['ff0592', 'ffbee3']}
+            ];
+
+
+        section.gradients
+        - const length = employees.length / 2;
+            ul.list-gradient
+                for i in length
+                    - const start = `#${ employees.pic[ 2 * i ] }`;
+                    - const end = `#${ employees.pic[ 2 * i + 1 ] }`;
+                    li.item-gradient( style={'--start': start, '--end': end} )
+                    .gradient
+                    p.start=employees.name
+                    p.end=employees.role

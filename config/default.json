@@ -1,5 +1,7 @@
 {
     "jwtPrivateKey": "",
     "db": "mongodb://localhost/happy-pawz",
-    "api": "http://localhost:5000/"
+    "api": "http://localhost:5000/",
+    "accessKeyId": "",
+    "secretAccessKey": ""
 }
