@@ -1,3 +1,4 @@
+//import all needed packages/modules
 const {Rental, validateRental} = require('../models/rental');
 const {Room} = require('../models/room');
 const {Owner} = require('../models/owner');
@@ -6,17 +7,14 @@ const validate = require('../middleware/validate');
 const Fawn = require('fawn');
 const express = require('express');
 const router = express.Router();
-const auth  = require('../middleware/auth');
-
-//GET api/rentals/:id
+//GET one by id api/rentals/:id
 router.get('/:id', async (req, res) => {
-    const rental = await Rental.findById(req.params.id);
+    const rental = await Rental.findOne(req.params.id);
     if (!rental) return res.status(404).send('The rental object with the given ID was not found');
     res.send(rental);
 });
-
-//POST new
-router.post('/',[auth, validate(validateRental)], async (req, res) => {
+//POST new api/rentals
+router.post('/',validate(validateRental), async (req, res) => {
     const owner = await Owner.findOne({_id: req.body.ownerId});
     if (!owner) return res.status(400).send('Invalid owner...');
 

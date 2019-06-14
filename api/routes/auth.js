@@ -6,7 +6,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
 
-//Login
+//Login /api/auth
 router.post('/', validate(validateInput),async (req, res) => {
     /* EITHER IF IT IS AN EMAIL OR A PASSWORD PROBLEM,
     THE USER SHOULD BE GIVEN A VAGUE RESPONSE SUCH AS "invalid e-mail or password."

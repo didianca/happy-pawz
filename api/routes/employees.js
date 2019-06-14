@@ -1,25 +1,25 @@
+//import all needed packages/modules
 const express = require('express');
 const router = express.Router();
 const validate = require('../middleware/validate');
 const auth  = require('../middleware/auth');
-
 const {Employee, validateEmployee} = require('../models/employee');
 const {Role} = require('../models/role');
-
-
-//GET all
+//ENPOINTS:
+//GET all  api/employees
 router.get('/', async (req, res) => {
+    //access employee list in db
     const employees = await Employee
-        .find()
-        .sort("-salary");
+        .find() //find them all
+        .sort("-salary"); //exclude the salary when returning
     res.send(employees);
 });
-
-//POST new
-router.post('/',[validate(validateEmployee)], async (req, res) => {
+//POST new  api/employees
+router.post('/',[validate(validateEmployee)]/*any middleware function will be called b4 the actual callback function*/, async (req, res) => {
+    //check for existence
     const role = await Role.findOne({_id : req.body.roleId});
     if(!role) return res.status(400).send('Invalid role...');
-
+    //create new instance of the employee class with the info provided in the body of the request
     const employee = new Employee({
         name: req.body.name,
         role:{
@@ -29,17 +29,18 @@ router.post('/',[validate(validateEmployee)], async (req, res) => {
         },
         phone:req.body.phone
     });
+    //set salary
     employee.setSalary();
+    //save new instance to db
     await employee.save();
-
     res.send(employee);
 });
-
-//UPDATE existing
+//UPDATE existing  api/employees/:id
 router.put('/:id', [auth,validate(validateEmployee)],async (req, res) => {
+    //check for existence
     const role = await Role.findOne({_id : req.body.roleId});
     if(!role) return res.status(400).send('Invalid role...');
-
+    //query by params and update using info provided in the body of the request
     const employee = await Employee.findOneAndUpdate({_id:req.params.id}, {
         name: req.body.name,
         role:{
@@ -49,23 +50,26 @@ router.put('/:id', [auth,validate(validateEmployee)],async (req, res) => {
         },
         phone:req.body.phone
     }, {new: true});
+    //deal with wrong params
     if (!employee) return res.status(404).send('The employee with the given ID was not found.');
     res.send(employee);
 });
-
-//DEL existing
+//DEL existing  api/employees/:id
 router.delete('/:id',[auth] ,async (req, res) => {
-    const employee = await Employee.findOneAndUpdate({_id:req.params.id});
+    //query by params and delete
+    const employee = await Employee.findOneAndDelete({_id:req.params.id});
+    //if bad params -> 404
     if (!employee) return res.status(404).send('The employee with the given ID was not found.');
     res.send(employee);
 });
-
-//GET one
+//GET one by id  api/employees/:id
 router.get('/:id', async (req, res) => {
+    //query by params
     const employee = await Employee.findOne({_id : req.params.id});
+    //if bad params -> 404
     if (!employee) return res.status(404).send('The employee with the given ID was not found');
     res.send(employee);
 });
-
-
+//export route to be implemented
+//see /api/startup/routes
 module.exports = router;
