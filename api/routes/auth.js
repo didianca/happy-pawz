@@ -11,15 +11,16 @@ router.post('/', validate(validateInput),async (req, res) => {
     /* EITHER IF IT IS AN EMAIL OR A PASSWORD PROBLEM,
     THE USER SHOULD BE GIVEN A VAGUE RESPONSE SUCH AS "invalid e-mail or password."
     SO THEY CAN NOT CHEAT IT*/
-    //check for email && pass -->> if valid => authenticate through auth-token
-
+    //check for email && pass -->> if valid => authorize through auth-token
+//FIRST: authenticate
     //check for email
     let user = await User.findOne({email: req.body.email});
     if(!user) return res.status(400).send('Invalid e-mail or password.');
     //check for pass
     const validPassword = await bcrypt.compare(req.body.password,user.password);
     if(!validPassword) return res.status(400).send('Invalid e-mail or password.');
-    //generate token which provides authentication
+//SECOND:authorize
+    //generate token which provides authorization
     const token =  user.generateAuthToken();
     res.send(token);
 });

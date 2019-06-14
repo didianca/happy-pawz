@@ -1,3 +1,5 @@
+
+//import all needed packages/modules
 const express = require('express');
 const router = express.Router();
 const {Room} = require('../models/room');
@@ -5,7 +7,7 @@ const {Pet} = require('../models/pet');
 const {Rental} = require('../models/rental');
 const Joi = require('joi');
 const validate = require('../middleware/validate');
-const auth  = require('../middleware/auth');
+const auth  = require('../middleware/auth'); //authorize
 
 //modify the existing rental
 router.post('/',[auth, validate(validateCheckout)], async (req, res) => {
