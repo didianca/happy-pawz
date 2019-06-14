@@ -1,3 +1,6 @@
+//Implementing the routes and exporting them to be used in index.js
+
+//importing all the necessary modules
 const express= require('express');
 const employees = require('../routes/employees');
 const roles = require('../routes/roles');

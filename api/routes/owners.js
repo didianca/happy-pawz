@@ -6,7 +6,6 @@ const router = express.Router();
 const {User} = require('../models/user');
 const Fawn = require('fawn');
 const mongoose = require('mongoose');
-const auth  = require('../middleware/auth');
 //Fawn needs to be initiated so it can be used later (see POST req)
 Fawn.init(mongoose);
 //GET all api/owners
@@ -48,7 +47,7 @@ router.post('/',[validate(validateOwner)], async (req, res) => {
     }
 });
 //UPDATE existing api/owners/:id
-router.put('/:id',[auth,validate(validateOwner)], async (req, res) => {
+router.put('/:id',validate(validateOwner), async (req, res) => {
     //check for existence in db
     const user = await User.findOne({_id : req.body.user});
     if(!user) return res.status(400).send('Invalid user...');
@@ -66,7 +65,7 @@ router.put('/:id',[auth,validate(validateOwner)], async (req, res) => {
     res.send(owner);
 });
 //DELETE existing  api/owners/:id
-router.delete('/:id', auth,async (req, res) => {
+router.delete('/:id',async (req, res) => {
     //query by params and delete
     const owner = await Owner.findOneAndDelete({_id:req.params.id});
     //if bad params -> 404

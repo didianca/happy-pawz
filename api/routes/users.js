@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
-const auth  = require('../middleware/auth'); //authorization
+const auth  = require('../middleware/auth'); //authentication
 //get the logged in user /api/users/me !!!ADD token in header to get proper result !!!
 router.get('/me',[auth],async (req,res)=>{
     //get user from db and exclude password
@@ -23,9 +23,9 @@ router.post('/', validate(validateUser),async (req, res) => {
     user.password = await bcrypt.hash(user.password,salt);
     //save changes
     await user.save();
-    //create token for authorization
+    //create token for authentication
     const token = user.generateAuthToken();
-    //set  the auth token in the header of the response
+    //set  the auth-token in the header of the response
     //the payload of the token contains info about the object
     res.header('x-auth-token',token).send( _.pick(user,['name','email','phone']));
 });

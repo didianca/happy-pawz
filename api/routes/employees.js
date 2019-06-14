@@ -2,10 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const validate = require('../middleware/validate');
-const auth  = require('../middleware/auth');
 const {Employee, validateEmployee} = require('../models/employee');
 const {Role} = require('../models/role');
-//ENPOINTS:
+//END-POINTS:
 //GET all  api/employees
 router.get('/', async (req, res) => {
     //access employee list in db
@@ -36,7 +35,7 @@ router.post('/',[validate(validateEmployee)]/*any middleware function will be ca
     res.send(employee);
 });
 //UPDATE existing  api/employees/:id
-router.put('/:id', [auth,validate(validateEmployee)],async (req, res) => {
+router.put('/:id', validate(validateEmployee),async (req, res) => {
     //check for existence
     const role = await Role.findOne({_id : req.body.roleId});
     if(!role) return res.status(400).send('Invalid role...');
@@ -55,7 +54,7 @@ router.put('/:id', [auth,validate(validateEmployee)],async (req, res) => {
     res.send(employee);
 });
 //DEL existing  api/employees/:id
-router.delete('/:id',[auth] ,async (req, res) => {
+router.delete('/:id' ,async (req, res) => {
     //query by params and delete
     const employee = await Employee.findOneAndDelete({_id:req.params.id});
     //if bad params -> 404
