@@ -5,6 +5,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
+const _ = require('lodash');
 
 //Login /api/auth
 router.post('/', validate(validateInput),async (req, res) => {
@@ -22,7 +23,7 @@ router.post('/', validate(validateInput),async (req, res) => {
 //SECOND:authenticate
     //generate token which provides authentication
     const token =  user.generateAuthToken();
-    res.send(token);
+    res.header('x-auth-token',token).send( _.pick(user,['name','email','phone']));
 });
 //validate user input through Joi npm package
 //different than the User validation method because this one requires just email and pass so phone number and name is redundant
