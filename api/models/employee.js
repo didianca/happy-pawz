@@ -1,6 +1,7 @@
+//import all needed packages/modules
 const Joi = require('joi');
 const mongoose = require('mongoose');
-
+//create object schema
 const employeeSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -8,7 +9,7 @@ const employeeSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 255
     },
-    role: {
+    role: {//get role by id
         type: new mongoose.Schema({
             title:{
                 type: String,
@@ -29,21 +30,22 @@ const employeeSchema = new mongoose.Schema({
         maxlength: 50,
         required: true
     },
-    salary: {
+    salary: { //method to calculate based on qualification rate
         type: Number,
         required: true,
         default:30000
     },
-    dateRegistered: {type: Date, default: Date.now}
+    dateRegistered: {type: Date, default: Date.now}//default
 });
-
+//create setSalary method to automatically set a salary based on the role
+//see roles for more details
 employeeSchema.methods.setSalary=function () {
   const salaryDiff = (this.role.qualificationRate/100) * this.salary;
     this.salary = this.salary + salaryDiff
 };
-
+//create this object based on the schema
 const Employee = mongoose.model('Employee', employeeSchema);
-
+//validate user input with joi npm package
 function validateEmployee(employee) {
     const schema = {
         name: Joi.string().min(5).max(255).required(),
@@ -52,7 +54,9 @@ function validateEmployee(employee) {
     };
     return Joi.validate(employee, schema);
 }
-
+//export schema for creating new instances
+//export Object for accessing instances in db
+//exporting validating function
 exports.employeeSchema = employeeSchema;
 exports.Employee = Employee;
 exports.validateEmployee = validateEmployee;

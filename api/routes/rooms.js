@@ -4,7 +4,6 @@ const express = require('express');
 const router = express.Router();
 const {Employee} = require('../models/employee');
 const auth  = require('../middleware/auth');
-const admin  = require('../middleware/admin');
 
 //GET all
 router.get('/', async (req, res) => {
@@ -14,7 +13,7 @@ router.get('/', async (req, res) => {
     res.send(rooms);
 });
 //POST new
-router.post('/', [auth,admin,validate(validateRoom)], async (req, res) => {
+router.post('/', [auth,validate(validateRoom)], async (req, res) => {
     const caretaker = await Employee.findOne({_id: req.body.caretakerId});
     if (!caretaker) return res.status(400).send('Invalid caretaker...');
 
@@ -46,7 +45,7 @@ router.post('/', [auth,admin,validate(validateRoom)], async (req, res) => {
     res.send(room);
 });
 //UPDATE existing
-router.put('/:id',  [auth,admin,validate(validateRoomUpdate)], async (req, res) => {
+router.put('/:id',  [auth,validate(validateRoomUpdate)], async (req, res) => {
     const caretaker = await Employee.findOne({_id: req.body.caretakerId});
     if (!caretaker) return res.status(400).send('Invalid caretaker...');
 
@@ -71,7 +70,7 @@ router.put('/:id',  [auth,admin,validate(validateRoomUpdate)], async (req, res) 
     res.send(room);
 });
 //DEL existing
-router.delete('/:id', [auth,admin,validate(validateRoom)], async (req, res) => {
+router.delete('/:id', [auth,validate(validateRoom)], async (req, res) => {
     const room = await Room.findOneAndDelete({_id:req.params.id});
     if (!room) return res.status(404).send('The room with the given ID was not found.');
     res.send(room);

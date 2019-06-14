@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const validate = require('../middleware/validate');
 const auth  = require('../middleware/auth');
-const admin  = require('../middleware/admin');
 
 const {Employee, validateEmployee} = require('../models/employee');
 const {Role} = require('../models/role');
@@ -17,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 //POST new
-router.post('/',[admin,auth,validate(validateEmployee)], async (req, res) => {
+router.post('/',[validate(validateEmployee)], async (req, res) => {
     const role = await Role.findOne({_id : req.body.roleId});
     if(!role) return res.status(400).send('Invalid role...');
 
@@ -37,7 +36,7 @@ router.post('/',[admin,auth,validate(validateEmployee)], async (req, res) => {
 });
 
 //UPDATE existing
-router.put('/:id', [admin,auth,validate(validateEmployee)],async (req, res) => {
+router.put('/:id', [auth,validate(validateEmployee)],async (req, res) => {
     const role = await Role.findOne({_id : req.body.roleId});
     if(!role) return res.status(400).send('Invalid role...');
 
@@ -55,7 +54,7 @@ router.put('/:id', [admin,auth,validate(validateEmployee)],async (req, res) => {
 });
 
 //DEL existing
-router.delete('/:id',[admin,auth] ,async (req, res) => {
+router.delete('/:id',[auth] ,async (req, res) => {
     const employee = await Employee.findOneAndUpdate({_id:req.params.id});
     if (!employee) return res.status(404).send('The employee with the given ID was not found.');
     res.send(employee);

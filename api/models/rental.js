@@ -1,9 +1,10 @@
+//import all needed packages/modules
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const moment = require('moment');
-
+//create object schema
 const rentalSchema = new mongoose.Schema({
-    owner: {
+    owner: { //give owner id to attach the rental to a specific owner (if not owner -> no pets -> can't rent)
         type: new mongoose.Schema({
             user: {
                 type: new mongoose.Schema({
@@ -30,7 +31,7 @@ const rentalSchema = new mongoose.Schema({
         }),
         required: true
     },
-    room: {
+    room: { //give room id to select exact room to rent
         type: new mongoose.Schema({
             dailyRentalRate: {
                 type: Number,
@@ -51,7 +52,7 @@ const rentalSchema = new mongoose.Schema({
         }),
         required: true
     },
-    pet:{
+    pet:{ //give pet id to keep track on which pet is in which room
       type: new mongoose.Schema({
           name: {
               type: String,
@@ -61,10 +62,11 @@ const rentalSchema = new mongoose.Schema({
           }
       })
     },
-    dateOut: {type: Date, required: true, default: Date.now},
-    dateReturned: {type: Date},
-    rentalFee: {type: Number, min: 0}
+    dateOut: {type: Date, required: true, default: Date.now},//default
+    dateReturned: {type: Date},//method to calculate
+    rentalFee: {type: Number, min: 0} //method to calculate
 });
+//create lookup method to easily look up a rental
 rentalSchema.statics.lookup = function (ownerId,roomId,petId) {
     return  this.findOne({
         "owner._id": ownerId,
@@ -72,14 +74,16 @@ rentalSchema.statics.lookup = function (ownerId,roomId,petId) {
         "pet._id":petId
     });
 };
-rentalSchema.methods.return = function () {
+//create checkOut method for assigning rental Fee owed
+rentalSchema.methods.checkOut = function () {
     this.dateReturned = Date.now();
     const rentalDays = moment().diff(this.dateOut, 'days');
     this.rentalFee = (rentalDays * this.room.dailyRentalRate);
     return this.rentalFee
 };
+//create this object based on the schema
 const Rental = mongoose.model('Rental', rentalSchema);
-
+//validate user input with joi npm package
 function validateRental(rental) {
     const schema = {
         ownerId: Joi.objectId().required(),
@@ -88,5 +92,7 @@ function validateRental(rental) {
     };
     return Joi.validate(rental, schema);
 }
+//export Object for accessing instances in db
+//exporting validating function
 exports.validateRental = validateRental;
 exports.Rental = Rental;

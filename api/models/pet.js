@@ -1,6 +1,7 @@
+//import all needed packages/modules
 const Joi = require('joi');
 const mongoose = require('mongoose');
-
+//create object schema
 const petSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -15,7 +16,7 @@ const petSchema = new mongoose.Schema({
         maxlength:50,
         unique:true
     },
-    ownerInfo: {
+    ownerInfo: {//access owner info by accessing the owner object through it's id
         type: new mongoose.Schema({
             name: {
                 type: String,
@@ -38,7 +39,7 @@ const petSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 50
     },
-    age: {
+    birthYear: {
         type: Number,
         required: true,
     },
@@ -62,19 +63,15 @@ const petSchema = new mongoose.Schema({
         type: Boolean,
         default:true
     },
-    isAccommodated: {
+    isAccommodated: {//automatically set when creating new rental
         type: Boolean,
         default: false
     },
-    dateRegistered: {type: Date, default: Date.now}
+    dateRegistered: {type: Date, default: Date.now}//default
 });
+//create this object based on the schema
 const Pet = mongoose.model('Pet', petSchema);
-
-//petSchema.methods.something=function () {
-  //needs to be called inside of the end point it'll be used in
- //calculate age
-//}
-
+//validate user input with joi npm package
 function validatePet(pet) {
     const schema = {
         name: Joi.string().min(1).max(50).required(),
@@ -82,7 +79,7 @@ function validatePet(pet) {
         ownerInfo: Joi.objectId().required(),
         petRace: Joi.string().min(3).max(50).required(),
         breed: Joi.string().min(5).max(50).required(),
-        age: Joi.number().required(),
+        birthYear: Joi.string().required(),
         castrated: Joi.boolean().required(),
         petColor: Joi.string().min(5).max(50).required(),
         sex: Joi.string().min(5).max(50).required(),
@@ -90,7 +87,9 @@ function validatePet(pet) {
     };
     return Joi.validate(pet, schema);
 }
-
+//export schema for creating new instances
+//export Object for accessing instances in db
+//exporting validating function
 exports.petSchema = petSchema;
 exports.Pet = Pet;
 exports.validatePet = validatePet;

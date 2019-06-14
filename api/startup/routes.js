@@ -8,8 +8,6 @@ const owners = require('../routes/owners');
 const pets = require('../routes/pets');
 const rentals = require('../routes/rentals');
 const checkout = require('../routes/checkout');
-const media = require('../routes/media');
-const error= require('../middleware/error');
 
 module.exports = function (app) {
     app.use(express.json());
@@ -22,6 +20,4 @@ module.exports = function (app) {
     app.use('/api/pets',pets);
     app.use('/api/rentals',rentals);
     app.use('/api/checkout',checkout);
-    app.use('/api/media',media);
-    app.use(error);
 };

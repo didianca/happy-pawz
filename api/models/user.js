@@ -1,10 +1,9 @@
+//import all needed packages/modules
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const config = require('config');
 const jwt=require('jsonwebtoken');
-
-
-
+//create object schema
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -29,26 +28,27 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    },
+    },//default
     isOwner: {
         type: Boolean,
         default: false
-    },
+    },//automatically set
     phone: {
         type: String,
         required: true,
         minlength: 5,
         maxlength: 50
     },
-    date: {type: Date, default: Date.now}
+    date: {type: Date, default: Date.now} //default
 });
-
+//generating auth token for authentication Login/SignUp
+//see /api/routes/ath & /api/routes/users
 userSchema.methods.generateAuthToken = function () {
-    const token = jwt.sign({_id: this._id, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
-    return token;
+    return token = jwt.sign({_id: this._id, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
 };
+//create this object based on the schema
 const User = mongoose.model('User', userSchema);
-
+//validate user input with joi npm package
 function validateUser(user) {
     const schema = {
         name: Joi.string().min(4).max(50).required(),
@@ -58,6 +58,7 @@ function validateUser(user) {
     };
     return Joi.validate(user, schema);
 }
-
+//export Object for accessing instances in db
+//exporting validating function
 exports.User = User;
 exports.validateUser = validateUser;

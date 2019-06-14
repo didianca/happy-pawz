@@ -12,8 +12,6 @@ router.get('/', async (req, res) => {
     const pets = await Pet
         .find()
         .sort({name: 1});
-    const petsList= [];
-    petsList.push(pets);
     res.send(pets);
 });
 
@@ -34,7 +32,7 @@ router.post('/',[auth, validate(validatePet)], async (req, res) => {
         },
         petRace: req.body.petRace,
         breed: req.body.breed,
-        age: req.body.age,
+        birthYear: req.body.birthYear,
         castrated: req.body.castrated,
         petColor: req.body.petColor,
         sex: req.body.sex,
@@ -70,7 +68,7 @@ router.put('/:id', [auth ,validate(validatePet)], async (req, res) => {
         },
         petRace: req.body.petRace,
         breed: req.body.breed,
-        age: req.body.age,
+        birthYear: req.body.birthYear,
         castrated: req.body.castrated,
         petColor: req.body.petColor,
         sex: req.body.sex,

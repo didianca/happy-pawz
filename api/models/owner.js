@@ -1,8 +1,9 @@
+//import all needed packages/modules
 const Joi = require('joi');
 const mongoose = require('mongoose');
-
+//create object schema
 const ownerSchema = new mongoose.Schema({
-    user: {
+    user: { //assign the ownership to a specific user and find him by userId
         type: new mongoose.Schema({
             name:{
                 type: String,
@@ -18,7 +19,7 @@ const ownerSchema = new mongoose.Schema({
             }
         })
     },
-    pets:{ //names
+    pets:{ //get owned pets names in an arr
         type: Array
     },
     address:{
@@ -29,9 +30,9 @@ const ownerSchema = new mongoose.Schema({
     },
     dateRegistered: {type: Date, default: Date.now}
 });
+//create this object based on the schema
 const Owner = mongoose.model('Owner', ownerSchema);
-
-
+//validate user input with joi npm package
 function validateOwner(owner) {
     const schema = {
         user:Joi.objectId().required(),
@@ -40,6 +41,9 @@ function validateOwner(owner) {
 
     return Joi.validate(owner, schema);
 }
+//export schema for creating new instances
+//export Object for accessing instances in db
+//exporting validating function
 exports.ownerSchema= ownerSchema;
 exports.Owner = Owner;
 exports.validateOwner = validateOwner;

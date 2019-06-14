@@ -14,7 +14,7 @@ router.post('/',[auth, validate(validateCheckout)], async (req, res) => {
     if (!rental) return res.status(404).send("The rental was not found");
     if (rental.dateReturned) return res.status(400).send('The return was already processed');
 
-    rental.return();
+    rental.checkOut();
     await rental.save();
 
     await Room.updateOne({_id: rental.room._id}, {
