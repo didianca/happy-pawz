@@ -19,13 +19,13 @@ router.get('/', async (req, res) => {
 //POST new api/owners
 router.post('/',[validate(validateOwner)], async (req, res) => {
     //check for existence
-    const user = await User.findOne({_id : req.body.user});
+    const user = await User.findOne({_id : req.body.userId});
     if(!user) return res.status(400).send('Invalid user...');
     //check ownership
-    if(user.isOwner) return res.status(400).send('You have already become an owner.');
+    if(user.isOwner) return res.status(400).send('You are already an owner');
     //create new instance of the Owner Class with info provided in the body of the request
     const owner = new Owner({
-        user:{
+        userId:{
             _id: user._id,
             name: user.name,
             phone: user.phone

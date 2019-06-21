@@ -27,9 +27,9 @@ router.post('/',validate(validatePet), async (req, res) => {
         microChip: req.body.microChip,
         ownerInfo: {
             _id: owner._id,
-            name: owner.user.name
+            name: owner.userId.name
         },
-        petRace: req.body.petRace,
+        species: req.body.species,
         breed: req.body.breed,
         birthYear: req.body.birthYear,
         castrated: req.body.castrated,
@@ -54,7 +54,7 @@ router.post('/',validate(validatePet), async (req, res) => {
 //UPDATE existing api/rentals/:id
 router.put('/:id', validate(validatePet), async (req, res) => {
     //check for existence in db
-    const owner = await Owner.findOne({_id: req.body.ownerInfo});
+    const owner = await User.findOne({_id: req.body.ownerInfo});
     if (!owner) return res.status(400).send('Invalid owner...');
     //query db based on params and update with info in body of req
     const pet = await Pet.findOneAndUpdate(req.params.id, {
@@ -65,7 +65,7 @@ router.put('/:id', validate(validatePet), async (req, res) => {
             name: owner.user.name,
             pets: owner.pets
         },
-        petRace: req.body.petRace,
+        species: req.body.species,
         breed: req.body.breed,
         birthYear: req.body.birthYear,
         castrated: req.body.castrated,

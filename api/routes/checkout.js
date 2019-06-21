@@ -13,16 +13,16 @@ router.post('/', validate(validateCheckout), async (req, res) => {
     //prevent possible error cases
     if (!rental) return res.status(404).send("The rental was not found");
     if (rental.dateReturned) return res.status(400).send('The return was already processed');
-    //use checkOut method to assigned rental Fee owed. see /api/models/rental for more details
+    //use checkOut method to assign rental Fee owed. see /api/models/rental for more details
     rental.checkOut();
     //save changes
     await rental.save();
     //cleanup db:
     await Room.updateOne({_id: rental.room._id}, {
-        $inc: {numberOfAvailable: +1}
+        $inc: {numberOfAvailable: +1}           //increase the number of available rooms
     });
     await Pet.updateOne({_id: rental.pet._id}, {
-        $set: {isAccommodated: false}
+        $set: {isAccommodated: false}           //set isAccommodated to true so that the
     });
     res.send(rental);
 });

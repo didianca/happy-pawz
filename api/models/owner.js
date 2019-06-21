@@ -3,7 +3,7 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 //create object schema
 const ownerSchema = new mongoose.Schema({
-    user: { //assign the ownership to a specific user and find him by userId
+    userId: { //assign the ownership to a specific user and find him by userId
         type: new mongoose.Schema({
             name:{
                 type: String,
@@ -35,7 +35,7 @@ const Owner = mongoose.model('Owner', ownerSchema);
 //validate user input with joi npm package
 function validateOwner(owner) {
     const schema = {
-        user:Joi.objectId().required(),
+        userId:Joi.objectId().required(),
         address: Joi.string().min(10).max(255).required()
     };
 

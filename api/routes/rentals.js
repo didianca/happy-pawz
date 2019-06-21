@@ -15,23 +15,24 @@ router.get('/:id', async (req, res) => {
 });
 //POST new api/rentals
 router.post('/',validate(validateRental), async (req, res) => {
+    //check for owner in db
     const owner = await Owner.findOne({_id: req.body.ownerId});
     if (!owner) return res.status(400).send('Invalid owner...');
-
+    //check for room in db
     const room = await Room.findOne({_id: req.body.roomId});
     if (!room) return res.status(400).send('Invalid room');
     if (room.numberOfAvailable === 0) return res.status(400).send('There is no available room with the given specifications');
-
+    //check for pet in db
     const pet = await Pet.findOne({_id: req.body.petId});
     if (!pet) return res.status(400).send('Invalid pet');
     if(pet.isAccommodated) return res.status(400).send('Pet already accommodated.');
-
+    //create new instance of the rental object
     let rental = new Rental({
         owner: {
             _id: owner._id,
             user: {
-                name: owner.user.name,
-                phone: owner.user.phone
+                name: owner.userId.name,
+                phone: owner.userId.phone
             },
             address: owner.address
         },
@@ -46,17 +47,17 @@ router.post('/',validate(validateRental), async (req, res) => {
             name:pet.name
         }
     });
-
+    //deal with transactions
     try {
         new Fawn.Task()
-            .save('rentals',rental)
+            .save('rentals',rental) //save the rental
             .update('rooms', {_id: room._id}, {
-                $inc: {numberOfAvailable: -1}
+                $inc: {numberOfAvailable: -1}               //reduce the number of available rooms
             })
             .update('pets',{_id: pet._id},{
-                $set:{isAccommodated: true}
+                $set:{isAccommodated: true}                 //accommodate the pet so it can not be accommodated twice
             })
-            .run();
+            .run(); //run the task
         res.send(rental)
     } catch (e) {
         res.status(500).send(e.message);

@@ -18,8 +18,11 @@ router.post('/',[validate(validateEmployee)]/*any middleware function will be ca
     //check for existence
     const role = await Role.findOne({_id : req.body.roleId});
     if(!role) return res.status(400).send('Invalid role...');
+    //employee - check for existence
+    let employee = await Employee.findOne({name: req.body.name} || {phone: req.body.phone});
+    if (employee) return res.status(400).send('Employee already registered');
     //create new instance of the employee class with the info provided in the body of the request
-    const employee = new Employee({
+    employee= new Employee({
         name: req.body.name,
         role:{
             _id: role._id,
@@ -29,9 +32,11 @@ router.post('/',[validate(validateEmployee)]/*any middleware function will be ca
         phone:req.body.phone
     });
     //set salary
+    role.setQualificationRate();
     employee.setSalary();
     //save new instance to db
     await employee.save();
+
     res.send(employee);
 });
 //UPDATE existing  api/employees/:id
@@ -40,8 +45,8 @@ router.put('/:id', validate(validateEmployee),async (req, res) => {
     const role = await Role.findOne({_id : req.body.roleId});
     if(!role) return res.status(400).send('Invalid role...');
     //query by params and update using info provided in the body of the request
-    const employee = await Employee.findOneAndUpdate({_id:req.params.id}, {
-        name: req.body.name,
+    const employee=await Employee.findOneAndUpdate({_id:req.params.id}, {
+            name: req.body.name,
         role:{
             _id: role._id,
             title: role.title,
@@ -49,6 +54,8 @@ router.put('/:id', validate(validateEmployee),async (req, res) => {
         },
         phone:req.body.phone
     }, {new: true});
+    //set salary
+    employee.setSalary();
     //deal with wrong params
     if (!employee) return res.status(404).send('The employee with the given ID was not found.');
     res.send(employee);

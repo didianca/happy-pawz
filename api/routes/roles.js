@@ -31,6 +31,7 @@ router.put('/:id',validate(validateRole),async(req,res)=>{
     },{new:true});                                                     /*the changes right away*/
      //set qualification rate
     role.setQualificationRate();
+    await role.save();
     //if role doesn't exist ->400
     if(!role) res.status(400).send('No role with the give ID found.');
     res.send(role)
