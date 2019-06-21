@@ -5,8 +5,9 @@ const {Pet, validatePet} = require('../models/pet');
 const {Owner} = require('../models/owner');
 const validate = require('../middleware/validate');
 const Fawn = require('fawn');
+const auth = require('../middleware/auth');
 //GET all api/pets
-router.get('/', async (req, res) => {
+router.get('/', auth,async (req, res) => {
     //access db
     const pets = await Pet
         .find() //get all instances of the class
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
     res.send(pets);
 });
 //POST new api/rentals
-router.post('/',validate(validatePet), async (req, res) => {
+router.post('/',[auth,validate(validatePet)], async (req, res) => {
     //check for existence in db
     const owner = await Owner.findOne({_id: req.body.ownerInfo});
     if (!owner) return res.status(400).send('Invalid owner...');
@@ -52,7 +53,7 @@ router.post('/',validate(validatePet), async (req, res) => {
     }
 });
 //UPDATE existing api/rentals/:id
-router.put('/:id', validate(validatePet), async (req, res) => {
+router.put('/:id', [auth,validate(validatePet)], async (req, res) => {
     //check for existence in db
     const owner = await User.findOne({_id: req.body.ownerInfo});
     if (!owner) return res.status(400).send('Invalid owner...');
@@ -78,7 +79,7 @@ router.put('/:id', validate(validatePet), async (req, res) => {
     res.send(pet);
 });
 //DEL existing api/rentals/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',auth, async (req, res) => {
     //query db based on params and del
     const pet = await Pet.findOneAndDelete(req.params.id);
     //if bad params -> 404
@@ -86,7 +87,7 @@ router.delete('/:id', async (req, res) => {
     res.send(pet);
 });
 //GET by id api/rentals/:id
-router.get('/:id', async (req, res) => {
+router.get('/:id',auth, async (req, res) => {
     //check db for specific item by id in params
     const pet = await Pet.findOne({_id: req.params.id});
     if (!pet) return res.status(404).send('The pet with the given ID was not found');

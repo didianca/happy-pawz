@@ -4,6 +4,8 @@ const {Room, validateRoom,validateRoomUpdate} = require('../models/room');
 const validate = require('../middleware/validate');
 const router = express.Router();
 const {Employee} = require('../models/employee');
+const admin = require('../middleware/admin');
+
 //GET all api/rooms
 router.get('/', async (req, res) => {
     //get rooms sorted by:
@@ -19,7 +21,7 @@ router.get('/', async (req, res) => {
     res.send(roomsByDailyRentalRate);
 });
 //POST new api/rooms
-router.post('/',validate(validateRoom), async (req, res) => {
+router.post('/',[admin,validate(validateRoom)], async (req, res) => {
     //check for proper input:
     //caretakerId
     const caretaker = await Employee.findOne({_id: req.body.caretakerId});
@@ -54,7 +56,7 @@ router.post('/',validate(validateRoom), async (req, res) => {
     res.send(room);
 });
 //UPDATE existing api/rooms/:id
-router.put('/:id',  validate(validateRoomUpdate), async (req, res) => {
+router.put('/:id',  [admin,validate(validateRoomUpdate)], async (req, res) => {
     //AGAIN check for correct input:
     //caretakerId
     const caretaker = await Employee.findOne({_id: req.body.caretakerId});
@@ -82,14 +84,14 @@ router.put('/:id',  validate(validateRoomUpdate), async (req, res) => {
     res.send(room);
 });
 //DEL existing api/rooms/:id
-router.delete('/:id', validate(validateRoom), async (req, res) => {
+router.delete('/:id', [admin,validate(validateRoom)], async (req, res) => {
     const room = await Room.findOneAndDelete({_id:req.params.id});//find in db and del
     //if it doesn't exist let the user know
     if (!room) return res.status(404).send('The room with the given ID was not found.');
     res.send(room);
 });
 //GET one api/rooms/:id
-router.get('/:id', async (req, res) => {
+router.get('/:id',async (req, res) => {
     //retrieve one from db
     const room = await Room.findOne({_id: req.params.id});
     // if it doesn't exist let user know

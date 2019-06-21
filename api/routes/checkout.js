@@ -6,8 +6,10 @@ const {Pet} = require('../models/pet');
 const {Rental} = require('../models/rental');
 const Joi = require('joi');
 const validate = require('../middleware/validate');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 //modify the existing rental
-router.post('/', validate(validateCheckout), async (req, res) => {
+router.post('/', [admin,auth,validate(validateCheckout)], async (req, res) => {
     //get the existing rental
     const rental = await Rental.lookup(req.body.ownerId, req.body.roomId, req.body.petId);
     //prevent possible error cases
