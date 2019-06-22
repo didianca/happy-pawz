@@ -18,11 +18,20 @@ const roleSchema = new mongoose.Schema({
 });
 //setting qualification rate which is multiplied later to add to the base salary based on the employees role
 roleSchema.methods.setQualificationRate = function () {
-    if(this.title ==='veterinarian') return this.qualificationRate = 50;
-    if(this.title ==='lawyer') return this.qualificationRate = 50;
-    if(this.title==='accountant') return this.qualificationRate = 25;
-    if(this.title==='medical assistant') return this.qualificationRate = 25;
+    switch (this.title) {
+        case 'veterinarian':
+        case 'lawyer':
+            this.qualificationRate = 50;
+            break;
+        case 'accountant':
+        case 'medical assistant':
+            this.qualificationRate = 25;
+            break;
+        default:
+            this.qualificationRate = 0;
+    }
     return this.qualificationRate
+
 };
 //create this object based on the schema
 const Role = mongoose.model('Role', roleSchema);

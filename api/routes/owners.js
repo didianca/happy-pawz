@@ -48,7 +48,7 @@ router.post('/',[auth,validate(validateOwner)], async (req, res) => {
     }
 });
 //UPDATE existing api/owners/:id
-router.put('/:id',[validate(validateOwner),auth], async (req, res) => {
+router.put('/:id',[auth,validate(validateOwner)], async (req, res) => {
     //check for existence in db
     const user = await User.findOne({_id : req.body.user});
     if(!user) return res.status(400).send('Invalid user...');

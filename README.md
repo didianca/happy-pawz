@@ -95,9 +95,9 @@
 ##### Step 1:       (*Sign Up*)
 ####### POST new user
 ##### Step 2:       (*Login*)
-####### POST existing *acc*: admin@gmail.com *pass*: admin123 --- *x-auth-token* : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDBiYzgzNDJlMmFlYzI2NzA3MDUxNGEiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTYxMTQyMDk3fQ.ajGs_l-roEKf6NdDcu4nmt037bxnxCCU7kYBswvimG8
+####### POST existing *acc*: admin@gmail.com *pass*: admin123 --- *x-auth-token* : 
 ##### Step 3:       (*Roles*)
-####### POST new 'lawyer' role --- *roleId*:
+####### POST new 'lawyer' role --- *roleId*:3
 ####### PUT lawyer -> veterinarian (see qualification rate change)
 ####### POST new 'caretaker' role --- *caretaker*-*roleId*:
 ####### POST new 'maid' role --- *maid*-*roleId*:

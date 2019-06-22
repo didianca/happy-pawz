@@ -44,7 +44,8 @@ const userSchema = new mongoose.Schema({
 //generating auth token for authentication Login/SignUp
 //see /api/routes/ath & /api/routes/users
 userSchema.methods.generateAuthToken = function () {
-    return token = jwt.sign({_id: this._id, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
+    const token = jwt.sign({_id: this._id, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
+    return token ;
 };
 //create this object based on the schema
 const User = mongoose.model('User', userSchema);

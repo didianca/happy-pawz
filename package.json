@@ -4,7 +4,8 @@
   "description": "A nice pet hotel that includes rooms renting and special veterinary care",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose --coverage --runInBand"
+    "test": "jest --watchAll --verbose --coverage --runInBand",
+    "start": "nodemon index.js --inspect=9229"
   },
   "author": "Didi",
   "license": "ISC",

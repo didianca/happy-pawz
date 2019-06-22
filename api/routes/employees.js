@@ -16,7 +16,7 @@ router.get('/',async (req, res) => {
     res.send(employees);
 });
 //POST new  api/employees
-router.post('/',[admin,auth,validate(validateEmployee)]/*any middleware function will be called b4 the actual callback function*/, async (req, res) => {
+router.post('/',[auth,admin,validate(validateEmployee)]/*any middleware function will be called b4 the actual callback function*/, async (req, res) => {
     //check for existence
     const role = await Role.findOne({_id : req.body.roleId});
     if(!role) return res.status(400).send('Invalid role...');
@@ -42,7 +42,7 @@ router.post('/',[admin,auth,validate(validateEmployee)]/*any middleware function
     res.send(employee);
 });
 //UPDATE existing  api/employees/:id
-router.put('/:id',[admin,auth, validate(validateEmployee)],async (req, res) => {
+router.put('/:id',[auth,admin, validate(validateEmployee)],async (req, res) => {
     //check for existence
     const role = await Role.findOne({_id : req.body.roleId});
     if(!role) return res.status(400).send('Invalid role...');
@@ -63,7 +63,7 @@ router.put('/:id',[admin,auth, validate(validateEmployee)],async (req, res) => {
     res.send(employee);
 });
 //DEL existing  api/employees/:id
-router.delete('/:id',[admin,auth] ,async (req, res) => {
+router.delete('/:id',[auth,admin] ,async (req, res) => {
     //query by params and delete
     const employee = await Employee.findOneAndDelete({_id:req.params.id});
     //if bad params -> 404
@@ -71,7 +71,7 @@ router.delete('/:id',[admin,auth] ,async (req, res) => {
     res.send(employee);
 });
 //GET one by id  api/employees/:id
-router.get('/:id',[admin,auth], async (req, res) => {
+router.get('/:id',[auth,admin], async (req, res) => {
     //query by params
     const employee = await Employee.findOne({_id : req.params.id});
     //if bad params -> 404
