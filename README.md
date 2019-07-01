@@ -95,22 +95,24 @@
 ##### Step 1:       (*Sign Up*)
 ####### POST new user
 ##### Step 2:       (*Login*)
-####### POST existing *acc*: admin@gmail.com *pass*: admin123 --- *x-auth-token* : 
+####### POST existing *acc*: admin@gmail.com *pass*: admin123 --- 
+#*x-auth-token* : 
+#*userId*: 
 ##### Step 3:       (*Roles*)
-####### POST new 'lawyer' role --- *roleId*:3
-####### PUT lawyer -> veterinarian (see qualification rate change)
-####### POST new 'caretaker' role --- *caretaker*-*roleId*:
-####### POST new 'maid' role --- *maid*-*roleId*:
+####### POST new 'lawyer' role --- *roleId*:
+####### PUT lawyer -> accountant (see qualification rate change)
+####### POST new 'caretaker' role --- *caretaker*-*roleId*: 
+####### POST new 'maid' role --- *maid*-*roleId*: 
 ##### Step 4:       (*Employees*)
-####### POST new veterinarian employee (see salary automatically change) //if we want to change the base salary we would change it only in one place
-####### POST new caretaker employee --- *caretakerId*:
-####### POST new maid employee --- *maidId*:
+####### POST new accountant employee (see salary automatically change) //if we want to change the base salary we would change it only in one place
+####### POST new caretaker employee --- *caretakerId*: 
+####### POST new maid employee --- *maidId*: 
 ##### Step 5:       (*Rooms*)
 ####### POST new room --- *roomId*:
 ##### Step 6:       (*Owners*)
-####### POST new owner --- *ownerId*:
+####### POST new owner --- *ownerId*: 
 ##### Step 7:       (*Pets*)
-####### POST new pet --- *petId*:
+####### POST new pet --- *petId*: 
 ##### Step 8:       (*Rental*)
 ####### POST new rental: look at it in DB
 ####### change date in DB to a previous date

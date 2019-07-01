@@ -49,8 +49,8 @@ router.post('/',[auth,admin,validate(validateRoom)], async (req, res) => {
     });
     //automatically set the outdoor access
     room.setOutdoorAccess();
-    //automatically set rental fee
-    room.setDailyRentalRate();
+    //automatically set rental fee and room name
+    room.setDailyRentalRateAndName();
     //save changes to db
     await room.save();
     res.send(room);
@@ -78,7 +78,7 @@ router.put('/:id',  [auth,admin,validate(validateRoomUpdate)], async (req, res) 
         }
     }, {new: true});
     room.setOutdoorAccess();
-    room.setDailyRentalRate();
+    room.setDailyRentalRateAndName();
     //if not -> 404
     if (!room) return res.status(404).send('The room with the given ID was not found.');
     res.send(room);

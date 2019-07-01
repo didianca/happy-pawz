@@ -40,7 +40,6 @@ function validateRole(role) {
     const schema = {
         title: Joi.string().min(4).max(50).required()
     };
-
     return Joi.validate(role, schema);
 }
 //export schema for creating new instances

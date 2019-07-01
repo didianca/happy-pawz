@@ -3,6 +3,9 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 //create object schema
 const roomSchema = new mongoose.Schema({
+    name:{
+        type:String
+    },
     size: { //single /multiple
         type: String,
         required: true,
@@ -67,14 +70,38 @@ const roomSchema = new mongoose.Schema({
 });
 //automatically setting the outdoor access to shorten the input required from the user
 roomSchema.methods.setOutdoorAccess = function () {
-    if (this.level === 0) return this.outdoorAccess = true
+    this.outdoorAccess = this.level === 0;
+    return this.outdoorAccess;
 };
 //automatically setting the rental rate based on the rooms properties
-roomSchema.methods.setDailyRentalRate = function () {
-    if (this.outdoorAccess === true && this.size === "single") return this.dailyRentalRate = 250;
-    if (this.outdoorAccess === true && this.size === "multiple") return this.dailyRentalRate = 200;
-    if (this.outdoorAccess === false && this.size === "single") return this.dailyRentalRate = 150;
-    if (this.outdoorAccess === false && this.size === "multiple") return this.dailyRentalRate = 100;
+roomSchema.methods.setDailyRentalRateAndName = function () {
+    switch (this.size) {
+        case 'single':
+            switch (this.outdoorAccess) {
+                case true:
+                    this.dailyRentalRate =250;
+                    this.name = 'S0';
+                    break;
+                case false:
+                    this.dailyRentalRate=100;
+                    this.name = 'S1';
+                    break;
+            }
+            break;
+        case 'multiple':
+            switch (this.outdoorAccess) {
+                case true:
+                    this.dailyRentalRate=200;
+                    this.name = 'M0';
+                    break;
+                case false:
+                    this.dailyRentalRate=100;
+                    this.name = 'M1';
+                    break;
+            }
+            break;
+    }
+    return this.dailyRentalRate;
 };
 //create this object based on the schema
 const Room = mongoose.model('Room', roomSchema);
