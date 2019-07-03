@@ -6,6 +6,7 @@ const {Owner} = require('../models/owner');
 const validate = require('../middleware/validate');
 const Fawn = require('fawn');
 const auth = require('../middleware/auth');
+const validateObjectId= require('../middleware/validateObjectId');
 //GET all api/pets
 router.get('/', auth,async (req, res) => {
     //access db
@@ -53,7 +54,7 @@ router.post('/',[auth,validate(validatePet)], async (req, res) => {
     }
 });
 //UPDATE existing api/rentals/:id
-router.put('/:id', [auth,validate(validatePet)], async (req, res) => {
+router.put('/:id', [validateObjectId,auth,validate(validatePet)], async (req, res) => {
     //check for existence in db
     const owner = await User.findOne({_id: req.body.ownerInfo});
     if (!owner) return res.status(400).send('Invalid owner...');
@@ -79,7 +80,7 @@ router.put('/:id', [auth,validate(validatePet)], async (req, res) => {
     res.send(pet);
 });
 //DEL existing api/rentals/:id
-router.delete('/:id',auth, async (req, res) => {
+router.delete('/:id',[validateObjectId,auth], async (req, res) => {
     //query db based on params and del
     const pet = await Pet.findOneAndDelete(req.params.id);
     //if bad params -> 404
@@ -87,7 +88,7 @@ router.delete('/:id',auth, async (req, res) => {
     res.send(pet);
 });
 //GET by id api/rentals/:id
-router.get('/:id',auth, async (req, res) => {
+router.get('/:id',[validateObjectId,auth], async (req, res) => {
     //check db for specific item by id in params
     const pet = await Pet.findOne({_id: req.params.id});
     if (!pet) return res.status(404).send('The pet with the given ID was not found');

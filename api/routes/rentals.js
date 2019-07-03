@@ -6,11 +6,12 @@ const {Pet} = require('../models/pet');
 const validate = require('../middleware/validate');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const validateObjectId= require('../middleware/validateObjectId');
 const Fawn = require('fawn');
 const express = require('express');
 const router = express.Router();
 //GET one by id api/rentals/:id
-router.get('/:id', [auth,admin],async (req, res) => {
+router.get('/:id', [validateObjectId,auth,admin],async (req, res) => {
     const rental = await Rental.findOne(req.params.id);
     if (!rental) return res.status(404).send('The rental object with the given ID was not found');
     res.send(rental);

@@ -9,7 +9,7 @@ describe('./api/roles', () => {
     });
     afterEach(async () => {
         server.close();
-        await Role.remove({});
+        await Role.deleteMany({});
     });
 
     describe('GET /', () => {
@@ -28,12 +28,19 @@ describe('./api/roles', () => {
     });
     describe('GET /:id',()=>{
         it('should return a role if valid id is passed',async ()=>{
-            const role= new Role({title: 'role1',qualificationRate:1});
+            const role= new Role({title: 'role1'});
             await role.save();
             const res = await request(server).get('/api/roles/' + role._id);
             expect(res.status).toBe(200);//status
             expect(res.body).toHaveProperty('title',role.title); //correct value
             expect(res.body).toHaveProperty('qualificationRate',role.qualificationRate); //correct value
-        })
-    })
+        });
+        it('should return 404 if invalid id is passed',async ()=>{
+            const res = await request(server).get('/api/roles/1');
+            expect(res.status).toBe(404);
+        });
+    });
+    describe('POST',()=>{
+
+    });
 });

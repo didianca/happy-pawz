@@ -1,4 +1,5 @@
 //import all needed packages/modules
+const validateObjectId = require('../middleware/validateObjectId');
 const express = require('express');
 const router = express.Router();
 const {Role, validateRole} = require('../models/role');
@@ -25,7 +26,7 @@ router.post('/',[auth,admin,validate(validateRole)],async (req, res) => {
     res.send(role);
 });
 //UPDATE existing api/roles/:id
-router.put('/:id',[auth,admin,validate(validateRole)],async(req,res)=>{
+router.put('/:id',[validateObjectId,auth,admin,validate(validateRole)],async(req,res)=>{
     //check for existence and update
      const role = await Role.findOneAndUpdate({_id:req.params.id},{    /*<---- .findOneAndUpdate() method*/
         title:req.body.title                                            /*queries the db and saves*/
@@ -33,11 +34,11 @@ router.put('/:id',[auth,admin,validate(validateRole)],async(req,res)=>{
     role.setQualificationRate();
     await role.save();
     //if role doesn't exist ->400
-    if(!role) res.status(400).send('No role with the give ID found.');
+    if(!role) res.status(404).send('No role with the give ID found.');
     res.send(role)
 });
 //DEL existing api/roles/:id
-router.delete('/:id' ,[auth,admin],async (req, res) => {
+router.delete('/:id' ,[validateObjectId,auth,admin],async (req, res) => {
     //find in db, delete it, save changes
     const role = await Role.findOneAndDelete({_id:req.params.id});
     //if non existent let user know
@@ -45,7 +46,7 @@ router.delete('/:id' ,[auth,admin],async (req, res) => {
     res.send(role);
 });
 //GET one api/roles/:id
-router.get('/:id',async (req, res) => {
+router.get('/:id',validateObjectId,async (req, res) => {
     //find in db and return it
     const role = await Role.findOne({_id:req.params.id});
     //if non existent let user know
