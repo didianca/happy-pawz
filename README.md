@@ -86,39 +86,3 @@
 ####### a. in Insomnia/Postman go to '*http://localhost:5000/api/checkout*' and make a new POST request with a JSON object as it's body in order to checkout and existing rental.
 ####### b. assign the '*ownerId*','*roomId*' and '*petId*' properties (used previously to create a rental object) to the object in the body of the request.
 ####### f. if there are no errors the body of the response will return the modified rental object(! mind the *id* property), else it will return the proper error message.
-#
-#
-#
-#
-#
-### Steps to follow in order to go through most routes(*DEMO*):
-##### Step 1:       (*Sign Up*)
-####### POST new user
-##### Step 2:       (*Login*)
-####### POST existing *acc*: admin@gmail.com *pass*: admin123 --- 
-#*x-auth-token* : 
-#*userId*: 
-##### Step 3:       (*Roles*)
-####### POST new 'lawyer' role --- *roleId*:
-####### PUT lawyer -> accountant (see qualification rate change)
-####### POST new 'caretaker' role --- *caretaker*-*roleId*: 
-####### POST new 'maid' role --- *maid*-*roleId*: 
-##### Step 4:       (*Employees*)
-####### POST new accountant employee (see salary automatically change) //if we want to change the base salary we would change it only in one place
-####### POST new caretaker employee --- *caretakerId*: 
-####### POST new maid employee --- *maidId*: 
-##### Step 5:       (*Rooms*)
-####### POST new room --- *roomId*:
-##### Step 6:       (*Owners*)
-####### POST new owner --- *ownerId*: 
-##### Step 7:       (*Pets*)
-####### POST new pet --- *petId*: 
-##### Step 8:       (*Rental*)
-####### POST new rental: look at it in DB
-####### change date in DB to a previous date
-##### Step 9:       (*Checkout*)
-####### POST in /api/checkout : get the new rental object modified
-#
-##### Admin login info: 
-#####   --->email: admin@gmail.com  
-#####   --->password: admin123
