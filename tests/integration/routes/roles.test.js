@@ -2,6 +2,7 @@
 const request = require('supertest');
 const {Role} = require('../../../api/models/role');
 const {User} = require('../../../api/models/user');
+const mongoose = require('mongoose');
 let server;
 /*Define the happy path
 In each test we change one param that CLEARLY aligns with the name of the test*/
@@ -38,6 +39,11 @@ describe('./api/roles', () => {
         });
         it('should return 404 if invalid id is passed',async ()=>{
             const res = await request(server).get('/api/roles/1');
+            expect(res.status).toBe(404);
+        });
+        it('should return 404 if no role with the given id exists',async ()=>{
+            const id = mongoose.Types.ObjectId();
+            const res = await request(server).get(`/api/roles/${id}`);
             expect(res.status).toBe(404);
         });
     });
