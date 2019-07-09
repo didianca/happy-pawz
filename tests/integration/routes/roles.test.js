@@ -98,7 +98,7 @@ describe('./api/roles', () => {
             expect(res.status).toBe(400);
         });
     });
-    describe('PUT',()=>{
+    describe('PUT /:id',()=>{
         let token;
         let newTitle;
         let role;
@@ -110,7 +110,7 @@ describe('./api/roles', () => {
                 .send({title:newTitle})
         };
         beforeEach(async ()=>{
-            // Before each test we need to create a genre and
+            // Before each test we need to create a role and
             // put it in the database.
             role = new Role({ title: 'role1' });
             await role.save();
@@ -125,7 +125,7 @@ describe('./api/roles', () => {
             expect(res.status).toBe(401);
         });
         it('should return 403 if client is not authorized', async () => {
-            token = token = new User().generateAuthToken();
+            token = token = new User({isAdmin:false}).generateAuthToken();
             const res = await exec();
             expect(res.status).toBe(403);
         });
@@ -154,10 +154,61 @@ describe('./api/roles', () => {
             const updatedRole = await Role.findOne({_id:role._id});
             expect(updatedRole.title).toBe(newTitle);
         });
-        it('should return the updated genre if it is valid', async () => {
+        it('should return the updated role if it is valid', async () => {
             const res = await exec();
             expect(res.body).toHaveProperty('_id');
             expect(res.body).toHaveProperty('title', newTitle);
         });
     });
+    describe('DELETE /:id',()=>{
+        let token;
+        let role;
+        let id;
+        const exec = async () => {
+            return await request(server)
+                .delete(`/api/roles/${id}`)
+                .set('x-auth-token', token)
+                .send();
+        };
+        beforeEach(async () => {
+            // Before each test we need to create a role and
+            // put it in the database.
+            role = new Role({ title: 'role1' });
+            await role.save();
+            id = role._id;
+            token = new User({ isAdmin: true }).generateAuthToken();
+        });
+        it('should return 401 if client is not logged in', async () => {
+            token = '';
+            const res = await exec();
+            expect(res.status).toBe(401);
+        });
+        it('should return 403 if the user is not an admin', async () => {
+            token = new User({ isAdmin: false }).generateAuthToken();
+            const res = await exec();
+            expect(res.status).toBe(403);
+        });
+        it('should return 404 if id is invalid', async () => {
+            id = 1;
+            const res = await exec();
+            expect(res.status).toBe(404);
+        });
+        it('should return 404 if no role with the given id was found', async () => {
+            id = mongoose.Types.ObjectId();
+            const res = await exec();
+            expect(res.status).toBe(404);
+        });
+        it('should delete the role if input is valid', async () => {
+            await exec();
+            const roleInDb = await Role.findOneAndDelete({_id:id});
+            expect(roleInDb).toBeNull();
+        });
+        it('should return the removed role', async () => {
+            const res = await exec();
+            expect(res.body).toHaveProperty('_id', role._id.toHexString());
+            expect(res.body).toHaveProperty('title', role.title);
+            expect(res.body).toHaveProperty('qualificationRate', role.qualificationRate);
+        });
+    });
+
 });
