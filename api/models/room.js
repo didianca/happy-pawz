@@ -83,7 +83,7 @@ roomSchema.methods.setDailyRentalRateAndName = function () {
                     this.name = 'S0';
                     break;
                 case false:
-                    this.dailyRentalRate=100;
+                    this.dailyRentalRate=150;
                     this.name = 'S1';
                     break;
             }
