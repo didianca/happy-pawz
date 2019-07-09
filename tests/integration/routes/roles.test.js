@@ -98,4 +98,66 @@ describe('./api/roles', () => {
             expect(res.status).toBe(400);
         });
     });
+    describe('PUT',()=>{
+        let token;
+        let newTitle;
+        let role;
+        let id;
+        const exec= async ()=>{
+            return await request(server)
+                .put(`/api/roles/${id}`)
+                .set('x-auth-token',token)
+                .send({title:newTitle})
+        };
+        beforeEach(async ()=>{
+            // Before each test we need to create a genre and
+            // put it in the database.
+            role = new Role({ title: 'role1' });
+            await role.save();
+            //set a token with admin privileges
+            token = new User({isAdmin:true}).generateAuthToken();
+            id=role._id;
+            newTitle='newTitle';
+        });
+        it('should return 401 if client is not logged in', async () => {
+            token = '';
+            const res = await exec();
+            expect(res.status).toBe(401);
+        });
+        it('should return 403 if client is not authorized', async () => {
+            token = token = new User().generateAuthToken();
+            const res = await exec();
+            expect(res.status).toBe(403);
+        });
+        it('should return 400 if title is less than 4 characters', async () => {
+            newTitle = '123';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if title is more than 50 characters', async () => {
+            newTitle = new Array(52).join('a');
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 404 if id is invalid', async () => {
+            id = 1;
+            const res = await exec();
+            expect(res.status).toBe(404);
+        });
+        it('should return 404 if title with the given id was not found', async () => {
+            id = mongoose.Types.ObjectId();
+            const res = await exec();
+            expect(res.status).toBe(404);
+        });
+        it('should update the role if input is valid', async () => {
+            await exec();
+            const updatedRole = await Role.findOne({_id:role._id});
+            expect(updatedRole.title).toBe(newTitle);
+        });
+        it('should return the updated genre if it is valid', async () => {
+            const res = await exec();
+            expect(res.body).toHaveProperty('_id');
+            expect(res.body).toHaveProperty('title', newTitle);
+        });
+    });
 });
