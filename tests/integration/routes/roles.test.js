@@ -23,8 +23,8 @@ describe('./api/roles', () => {
             const res = await request(server).get('/api/roles');
             expect(res.status).toBe(200); //status
             expect(res.body.length).toBe(2); //complete list
-            expect(res.body.some(r=>r.title ==='role1')).toBeTruthy(); //correct values
-            expect(res.body.some(r=>r.title ==='role2')).toBeTruthy();//correct values
+            expect(res.body.some(role=>role.title ==='role1')).toBeTruthy(); //correct values
+            expect(res.body.some(role=>role.title ==='role2')).toBeTruthy();//correct values
             expect(res.body[0].qualificationRate).toBeGreaterThan(res.body[1].qualificationRate); //ordering result
         })
     });

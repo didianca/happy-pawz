@@ -17,13 +17,13 @@ router.post('/', validate(validateUser),async (req, res) => {
     //check for duplication
     let user = await User.findOne({email: req.body.email});
     if(user) return res.status(400).send('User already registered.');
-    //create new user and deal with password generating and hashing
+
     user = new User(_.pick(req.body,['name','email','password','phone']));
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password,salt);
-    //save changes
+
     await user.save();
-    //create token for authentication
+
     const token = user.generateAuthToken();
     //set  the auth-token in the header of the response
     //the payload of the token contains info about the object
