@@ -33,8 +33,8 @@ describe('./api/roles', () => {
             const role= new Role({title: 'role1'});
             await role.save();
             const res = await request(server).get('/api/roles/' + role._id);
-            expect(res.status).toBe(200);//status
-            expect(res.body).toHaveProperty('title',role.title); //correct value
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('title',role.title);
             expect(res.body).toHaveProperty('qualificationRate',role.qualificationRate); //correct value
         });
         it('should return 404 if invalid id is passed',async ()=>{
