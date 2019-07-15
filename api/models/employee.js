@@ -7,7 +7,7 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 5,
-        maxlength: 255
+        maxlength: 50
     },
     role: {//get role by id
         type: new mongoose.Schema({
@@ -48,7 +48,7 @@ const Employee = mongoose.model('Employee', employeeSchema);
 //validate user input with joi npm package
 function validateEmployee(employee) {
     const schema = {
-        name: Joi.string().min(5).max(255).required(),
+        name: Joi.string().min(5).max(50).required(),
         roleId: Joi.objectId().required(),
         phone: Joi.string().min(5).max(50).required()
     };

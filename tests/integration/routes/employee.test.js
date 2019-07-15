@@ -55,5 +55,85 @@ describe('/api/employees route', () => {
             expect(res.status).toBe(401);
         })
     });
-
+    describe('POST',()=>{
+        let token;
+        let name;
+        let role;
+        let phone;
+        const exec = async()=>{
+          return await request(server)
+              .post('/api/employees')
+              .set('x-auth-token',token)
+              .send({name,roleId:role._id,phone})
+        };
+        beforeEach( async ()=>{
+           name='name1';
+           role = new Role({title:'role1'});
+           role.setQualificationRate();
+           await role.save();
+           phone='12345 ';
+           token = new User({isAdmin:true}).generateAuthToken();
+        });
+        it('should return 401 if client is not logged in',async ()=>{
+           token = '';
+           const res = await exec();
+           expect(res.status).toBe(401);
+        });
+        it('should return 403 is client is not authorized',async ()=>{
+           token = new User().generateAuthToken();
+           const res = await exec();
+           expect(res.status).toBe(403);
+        });
+        it('should return 400 if employee already registered',async()=>{
+           const employee = new Employee({name,role,phone});
+           await employee.save();
+           const res = await exec();
+           expect(res.status).toBe(400);
+        });
+        it('should return 400 if name is missing',async()=>{
+            name = '';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if name is less than 5 characters long',async()=>{
+            name = 'name';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if name is longer than 50 characters long',async()=>{
+            name = new Array(52).join('a');
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if role is missing',async()=>{
+            role = {_id:''};
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if role is not a valid object',async()=>{
+            role = 'role';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if phone is missing',async()=>{
+            phone = '';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if phone is less than 5 characters long',async()=>{
+            phone = '1234';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if phone is longer than 50 characters long',async()=>{
+            phone = new Array(52).join('1');
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should save the employee if it is valid',async ()=>{
+            await exec();
+            const employee = await Employee.findOne({name:'name1'});
+            expect(employee).not.toBeNull();
+        });
+    });
 });
