@@ -12,8 +12,7 @@ const validateObjectId= require('../middleware/validateObjectId');
 router.get('/',async (req, res) => {
     //access employee list in db
     const employees = await Employee
-        .find() //find them all
-        .sort("-salary"); //exclude the salary when returning
+        .find({},{salary:0});//find them all //exclude the salary when returning
     res.send(employees);
 });
 //POST new  api/employees
