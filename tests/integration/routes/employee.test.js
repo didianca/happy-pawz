@@ -136,4 +136,42 @@ describe('/api/employees route', () => {
             expect(employee).not.toBeNull();
         });
     });
+    describe('PUT /:id',()=>{
+        let token;
+        let newName;
+        let role;
+        let newRoleId;
+        let newPhone;
+        let employee;
+        let id;
+        const exec = async()=>{
+            return await request(server)
+                .put(`/api/employees/${id}`)
+                .set('x-auth-token',token)
+                .send({name:newName,roleId:newRoleId,phone:newPhone})
+        };
+        beforeEach(async()=>{
+            //insert a role for the beginning and have a second role to change it to
+            role = new Role({title:'accountant'});
+            role.setQualificationRate();
+            await role.save();
+            const newRole = new Role({title:'maid'});
+            newRole.setQualificationRate();
+            await newRole.save();
+            newRoleId = newRole._id;
+            //create an employee to be changed -  change these values one by one to see different paths
+            employee = new Employee({
+                name: 'name1',
+                role: {_id: role._id,title:role.title,qualificationRate:role.qualificationRate},
+                phone:'12345'
+            });
+            employee.setSalary();
+            await employee.save();
+            token = new User({isAdmin:true}).generateAuthToken();
+            id = employee._id;
+            //set the new values that will be given when exec will be given in the exec function
+            newPhone='23456';
+            newName='name2';
+        });
+    });
 });
