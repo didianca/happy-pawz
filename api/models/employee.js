@@ -40,8 +40,8 @@ const employeeSchema = new mongoose.Schema({
 //create setSalary method to automatically set a salary based on the role
 //see roles for more details
 employeeSchema.methods.setSalary=function () {
-  const salaryDiff = (this.role.qualificationRate/100) * this.salary; //%
-    this.salary = this.salary + salaryDiff //add  % to minimum salary
+  const salaryDiff = (this.role.qualificationRate/100) * 30000; //%
+  this.salary = 30000 + salaryDiff //add  % to minimum salary
 };
 //create this object based on the schema
 const Employee = mongoose.model('Employee', employeeSchema);

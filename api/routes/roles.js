@@ -32,8 +32,7 @@ router.put('/:id',[validateObjectId,auth,admin,validate(validateRole)],async(req
         title:req.body.title                                            /*queries the db and saves*/
     },{new:true});                                                     /*the changes right away*/
     //if role doesn't exist ->400
-    if(!role) res.status(404).send('No role with the give ID found.');
-
+    if(!role) return res.status(404).send('No role with the give ID found.');
     role.setQualificationRate();
     await role.save();
     res.send(role)

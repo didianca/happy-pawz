@@ -115,6 +115,11 @@ describe('/api/employees route', () => {
             const res = await exec();
             expect(res.status).toBe(400);
         });
+        it('should return 400 if no role with the give id exists',async()=>{
+            role = {_id: mongoose.Types.ObjectId()};
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
         it('should return 400 if phone is missing',async()=>{
             phone = '';
             const res = await exec();
@@ -172,6 +177,90 @@ describe('/api/employees route', () => {
             //set the new values that will be given when exec will be given in the exec function
             newPhone='23456';
             newName='name2';
+        });
+        it('should return 401 if client is not logged in',async ()=>{
+            token = '';
+            const res = await exec();
+            expect(res.status).toBe(401);
+        });
+        it('should return 403 if the user is not admin',async ()=>{
+            token = new User().generateAuthToken();
+            const res = await exec();
+            expect(res.status).toBe(403);
+
+        });
+        it('should return 404 if id is invalid',async()=>{
+           id = '1';
+           const res = await exec();
+           expect(res.status).toBe(404);
+        });
+        it('should return 404 if no employee with the given id was found',async ()=>{
+           id=mongoose.Types.ObjectId();
+           const res = await exec();
+           expect(res.status).toBe(404);
+        });
+        it('should return 400 if roleId is not a valid id',async ()=>{
+           newRoleId = '1';
+           const res = await exec();
+           expect(res.status).toBe(400);
+        });
+        it('should return 400 if no role with the given id was found',async()=>{
+           newRoleId=mongoose.Types.ObjectId();
+           const res = await exec();
+           expect(res.status).toBe(400);
+        });
+        it('should return 400 if name is less than 5 characters',async ()=>{
+            newName='1234';
+            const res=await exec();
+            expect(res.status).toBe(400)
+        });
+        it('should be 400 if name is longer than 50 characters',async ()=>{
+           newName = new Array(52).join('a');
+           const res = await exec();
+           expect(res.status).toBe(400);
+        });
+        it('should return 400 if name is missing',async ()=>{
+           newName='';
+           const res = await exec();
+           expect(res.status).toBe(400);
+        });
+        it('should return 400 if name is not of type string',async ()=>{
+            newName = 1;
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should be 400 if phone is not of type string',async ()=>{
+           newPhone = 1 ;
+           const res = await exec();
+           expect(res.status).toBe(400);
+        });
+        it('should be 400 if phone is less than 5 characters long',async ()=>{
+            newPhone = '1234' ;
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should be 400 if phone is longer than 50 characters long',async ()=>{
+            newPhone = new Array(52).join('a') ;
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should be 400 if phone is missing',async ()=>{
+            newPhone = '';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should be 400 if salary is missing',async ()=>{
+            const res = await exec();
+            expect(res.body).toHaveProperty('salary');
+        });
+        it('should return the updated employee',async ()=>{
+            const res = await exec();
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('name','name2');
+            expect(res.body).toHaveProperty('role');
+            expect(res.body).toHaveProperty('phone','23456');
+            expect(res.body).toHaveProperty('role.title','maid');
+            expect(res.body).toHaveProperty('salary',30000);
         });
     });
 });

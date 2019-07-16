@@ -56,10 +56,11 @@ router.put('/:id',[validateObjectId,auth,admin, validate(validateEmployee)],asyn
         },
         phone:req.body.phone
     }, {new: true});
-    //set salary
-    employee.setSalary();
     //deal with wrong params
-    if (!employee) return res.status(404).send('The employee with the given ID was not found.');
+    if(!employee) return res.status(404).send('The employee with the given ID was not found.');
+    //set salary
+    role.setQualificationRate();
+    employee.setSalary();
     res.send(employee);
 });
 //DEL existing  api/employees/:id
