@@ -1,21 +1,20 @@
 //import all needed packages/modules
 const {Owner, validateOwner} = require('../models/owner');
 const validate = require('../middleware/validate');
-const express = require('express');
-const router = express.Router();
 const {User} = require('../models/user');
 const Fawn = require('fawn');
 const mongoose = require('mongoose');
 const auth = require('../middleware/auth');
 const validateObjectId= require('../middleware/validateObjectId');
+const express = require('express');
+const router = express.Router();
 //Fawn needs to be initiated so it can be used later (see POST req)
 Fawn.init(mongoose);
 //GET all api/owners
-router.get('/',auth, async (req, res) => {
+router.get('/', async (req, res) => {
     //get owner from db
     const owner = await Owner
-        .find() //get all
-        .sort({name: 1}); //sor by name A-> Z
+        .find();
     res.send(owner);
 });
 //POST new api/owners
@@ -49,7 +48,7 @@ router.post('/',[auth,validate(validateOwner)], async (req, res) => {
     }
 });
 //UPDATE existing api/owners/:id
-router.put('/:id',[validateObjectId,auth,validate(validateOwner)], async (req, res) => {
+router.put('/:id',[auth,validate(validateOwner),validateObjectId], async (req, res) => {
     //check for existence in db
     const user = await User.findOne({_id : req.body.user});
     if(!user) return res.status(400).send('Invalid user...');
@@ -67,7 +66,7 @@ router.put('/:id',[validateObjectId,auth,validate(validateOwner)], async (req, r
     res.send(owner);
 });
 //DELETE existing  api/owners/:id
-router.delete('/:id',[validateObjectId,auth],async (req, res) => {
+router.delete('/:id',[auth,validateObjectId],async (req, res) => {
     //query by params and delete
     const owner = await Owner.findOneAndDelete({_id:req.params.id});
     //if bad params -> 404
@@ -75,7 +74,7 @@ router.delete('/:id',[validateObjectId,auth],async (req, res) => {
     res.send(owner);
 });
 //GET existing  api/owners/:id
-router.get('/:id', [validateObjectId,auth],async (req, res) => {
+router.get('/:id', [auth,validateObjectId],async (req, res) => {
     //query by params
     const owner = await Owner.findOne({_id:req.params.id});
     //if bad params -> 404
