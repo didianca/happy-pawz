@@ -11,10 +11,9 @@ const router = express.Router();
 //Fawn needs to be initiated so it can be used later (see POST req)
 Fawn.init(mongoose);
 //GET all api/owners
-router.get('/', async (req, res) => {
+router.get('/',auth,  async (req, res) => {
     //get owner from db
-    const owner = await Owner
-        .find();
+    const owner = await Owner.find({});
     res.send(owner);
 });
 //POST new api/owners
@@ -26,7 +25,7 @@ router.post('/',[auth,validate(validateOwner)], async (req, res) => {
     if(user.isOwner) return res.status(400).send('You are already an owner');
     //create new instance of the Owner Class with info provided in the body of the request
     const owner = new Owner({
-        userId:{
+        user:{
             _id: user._id,
             name: user.name,
             phone: user.phone

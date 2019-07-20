@@ -18,7 +18,7 @@ describe('/api/employees route', () => {
         it('should return all employees', async () => {
             await Employee.collection.insertMany([
                 {name: 'name1', role: 'role1', phone: '12345', salary: '1'},
-                {name: 'name2', role: 'rol2', phone: '12345', salary: '2'}
+                {name: 'name2', role: 'role2', phone: '12345', salary: '2'}
             ]);
             const res = await request(server).get('/api/employees');
             expect(res.status).toBe(200);
