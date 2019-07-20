@@ -49,7 +49,6 @@ describe('/api/owners route', () => {
     describe('GET /:id', () => {
         it('return 401 if no authentication is provided', async () => {
             const token = '';
-            //TODO: \/
             const user = {
                 name: 'name',
                 phone: '12345',
