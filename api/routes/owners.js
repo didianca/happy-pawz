@@ -19,12 +19,14 @@ router.get('/',auth,  async (req, res) => {
 //POST new api/owners
 router.post('/',[auth,validate(validateOwner)], async (req, res) => {
     //check for existence
-    const user = await User.findOne({_id : req.body.userId});
+    const user = await User.findOne({_id : req.body.user});
     if(!user) return res.status(400).send('Invalid user...');
     //check ownership
     if(user.isOwner) return res.status(400).send('You are already an owner');
+    let owner = await Owner.findOne({user});
+    if(owner) return res.status(400).send('Owner already registered');
     //create new instance of the Owner Class with info provided in the body of the request
-    const owner = new Owner({
+    owner = new Owner({
         user:{
             _id: user._id,
             name: user.name,
@@ -43,7 +45,7 @@ router.post('/',[auth,validate(validateOwner)], async (req, res) => {
             .run(); //run the task for it to take place
         res.send(owner);
     }catch (e) {
-        res.status(500).send(e.message); //something went wrong
+        res.status(500).send(e.message);
     }
 });
 //UPDATE existing api/owners/:id

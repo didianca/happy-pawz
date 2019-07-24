@@ -61,4 +61,5 @@ function validateUser(user) {
 //export Object for accessing instances in db
 //exporting validating function
 exports.User = User;
+exports.userSchema = userSchema;
 exports.validateUser = validateUser;

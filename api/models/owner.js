@@ -17,7 +17,8 @@ const ownerSchema = new mongoose.Schema({
                 minlength: 5,
                 maxlength: 50
             }
-        })
+        }),
+        required:true
     },
     pets:{ //get owned pets names in an arr
         type: Array
@@ -35,7 +36,7 @@ const Owner = mongoose.model('Owner', ownerSchema);
 //validate user input with joi npm package
 function validateOwner(owner) {
     const schema = {
-        userId:Joi.objectId().required(),
+        user:Joi.objectId().required(),
         address: Joi.string().min(10).max(255).required()
     };
     return Joi.validate(owner, schema);

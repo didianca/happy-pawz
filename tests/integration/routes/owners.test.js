@@ -28,22 +28,22 @@ describe('/api/owners route', () => {
                 password: 'password'
             };
             await Owner.collection.insertMany([
-                {user: userOne, address: '30 Findlay St, Cincinnati, OH',pets:[]},
-                {user: userTwo, address: '31 Findlay St, Cincinnati, OH',pets:[]}
+                {user: userOne, address: '30 Findlay St, Cincinnati, OH', pets: []},
+                {user: userTwo, address: '31 Findlay St, Cincinnati, OH', pets: []}
             ]);
-            const token = new User({isAdmin:true}).generateAuthToken();
+            const token = new User().generateAuthToken();
             const res = await request(server)
                 .get('/api/owners')
                 .set('x-auth-token', token);
             expect(res.status).toBe(200);
             expect(res.body).not.toBeNull();
-            expect(res.body).toHaveLength(2);
-            expect(res.body[0]).toHaveProperty('user');
-            expect(res.body[0]).toHaveProperty('pets');
-            expect(res.body[0]).toHaveProperty('address','30 Findlay St, Cincinnati, OH');
-            expect(res.body[1]).toHaveProperty('user');
-            expect(res.body[1]).toHaveProperty('pets');
-            expect(res.body[1]).toHaveProperty('address','31 Findlay St, Cincinnati, OH');
+            expect(res.body.some(owner => owner.user.name === 'name1')).toBeTruthy();
+            expect(res.body.some(owner => owner.user.email === 'email1@email.com')).toBeTruthy();
+            expect(res.body.some(owner => owner.address === '30 Findlay St, Cincinnati, OH')).toBeTruthy();
+            expect(res.body.some(owner => owner.user.name === 'name2')).toBeTruthy();
+            expect(res.body.some(owner => owner.user.email === 'email2@email.com')).toBeTruthy();
+            expect(res.body.some(owner => owner.address === '31 Findlay St, Cincinnati, OH')).toBeTruthy();
+
         });
     });
     describe('GET /:id', () => {
@@ -114,4 +114,89 @@ describe('/api/owners route', () => {
             expect(res.status).toBe(200)
         });
     });
+    describe('POST /', () => {
+        let token;
+        let user;
+        let address;
+        const exec = async () => {
+            return await request(server)
+                .post('/api/owners')
+                .set('x-auth-token', token)
+                .send({user: user._id, address});
+        };
+        beforeEach(async () => {
+            user = new User({name: 'name', phone: '12345', email: 'email@email.com', password: 'password'});
+            await user.save();
+            token = user.generateAuthToken();
+            address = '30 Findlay St, Cincinnati, OH';
+        });
+        it('should return 401 is client is not logged in', async () => {
+            token = '';
+            const res = await exec();
+            expect(res.status).toBe(401);
+        });
+        it('should return 400 if owner already registered', async () => {
+            const owner = new Owner({user, address});
+            await owner.save();
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if user is missing', async () => {
+            user = '';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if user is not a valid object', async () => {
+            user = 'string';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if address is missing', async () => {
+            address = '';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if address is less than 10 characters long', async () => {
+            address = '12345';
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if address is longer than 255 characters long', async () => {
+            address = new Array('257').join('a');
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if address is not of type string', async () => {
+            address = 1234567890;
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if user doesn\'t exist', async () => {
+            user = {_id: mongoose.Types.ObjectId()};
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if no user with the given id exists', async () => {
+            user = mongoose.Types.ObjectId();
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if  user is already owner', async () => {
+            await User.findOneAndUpdate({_id: user._id}, {$set: {isOwner: true}});
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return the new owner if it is valid', async () => {
+            const res = await exec();
+            expect(res.status).toBe(200);
+            expect(res.body).not.toBeNull();
+            expect(res.body).toHaveProperty('user');
+            expect(res.body.user).toHaveProperty('name', user.name);
+            expect(res.body.user).toHaveProperty('phone', user.phone);
+            expect(res.body).toHaveProperty('address', address);
+            expect(res.body).toHaveProperty('pets', []);
+
+        })
+    });
+
 });
