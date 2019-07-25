@@ -213,7 +213,7 @@ describe('/api/owners route', () => {
             return await request(server)
                 .put(`/api/owners/${id}`)
                 .set('x-auth-token', token)
-                .send({user: {_id:newUser._id,name:newUser.name,phone:newUser.phone}, address: newAddress})
+                .send({user: newUser._id, address: newAddress})
         };
         beforeEach(async () => {
             newUser = new User({
@@ -227,14 +227,14 @@ describe('/api/owners route', () => {
                 name: 'oldName',
                 phone: 'oldPhone',
                 email: 'oldEmail@email.com',
-                password:'oldPassword'
+                password: 'oldPassword'
             });
             await user.save();
             owner = new Owner({
                 user: {
-                    _id:user._id,
-                    name:user.name,
-                    phone:user.phone
+                    _id: user._id,
+                    name: user.name,
+                    phone: user.phone
                 },
                 address: '115 Winding Way, Covington, KY'
             });
@@ -247,6 +247,53 @@ describe('/api/owners route', () => {
             token = '';
             const res = await exec();
             expect(res.status).toBe(401);
-        })
+        });
+        it('should return 404 if id is invalid', async () => {
+            id = '1';
+            const res = await exec();
+            expect(res.status).toBe(404);
+        });
+        it('should return 404 if no owner with the given id was found', async () => {
+            id = mongoose.Types.ObjectId();
+            const res = await exec();
+            expect(res.status).toBe(404);
+        });
+        it('should return 400 if no user with the given id was found', async () => {
+            newUser = {_id: mongoose.Types.ObjectId()};
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if the userId is not a valid objectId',async ()=>{
+            newUser = {_id: '1'};
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if address is less than 10 characters long',async ()=>{
+           newAddress = '123456789';
+           const res = await exec();
+           expect(res.status).toBe(400);
+        });
+        it('should return 400 if address is longer than 255 characters',async ()=>{
+           newAddress = new Array(257).join('a');
+           const res = await exec();
+           expect(res.status).toBe(400);
+        });
+        it('should return 400 if address is missing',async ()=>{
+           newAddress = '';
+           const res = await exec();
+           expect(res.status).toBe(400);
+        });
+        it('should return 400 if address is not of type string',async ()=>{
+           newAddress = 1;
+           const res = await exec();
+           expect(res.status).toBe(400)
+        });
+        it('should return the updated owner',async ()=>{
+           const res = await exec();
+           expect(res.status).toBe(200);
+           expect(res.body).toHaveProperty('address',newAddress);
+           expect(res.body).toHaveProperty('user');
+           expect(res.body.user).toHaveProperty('name','newName');
+        });
     });
 });
