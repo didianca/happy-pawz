@@ -271,7 +271,7 @@ describe('/api/employees route', () => {
             return await request(server)
                 .delete(`/api/employees/${id}`)
                 .set('x-auth-token', token)
-                .send();
+
         };
         beforeEach(async () => {
             employee = new Employee({name: 'name1', role: new Role({title: 'role'}), phone: '12345'});
