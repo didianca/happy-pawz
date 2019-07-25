@@ -17,8 +17,7 @@ const ownerSchema = new mongoose.Schema({
                 minlength: 5,
                 maxlength: 50
             }
-        }),
-        required:true
+        })
     },
     pets:{ //get owned pets names in an arr
         type: Array

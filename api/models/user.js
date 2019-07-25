@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         maxlength: 50,
-        unique: true,
+        unique:true
     },
     password: {
         type: String,
@@ -43,8 +43,7 @@ const userSchema = new mongoose.Schema({
 //generating auth token for authentication Login/SignUp
 //see /api/routes/ath & /api/routes/users
 userSchema.methods.generateAuthToken = function () {
-    const token = jwt.sign({_id: this._id, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
-    return token ;
+    return jwt.sign({_id: this._id, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
 };
 //create this object based on the schema
 const User = mongoose.model('User', userSchema);

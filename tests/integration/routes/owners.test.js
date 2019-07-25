@@ -125,7 +125,12 @@ describe('/api/owners route', () => {
                 .send({user: user._id, address});
         };
         beforeEach(async () => {
-            user = new User({name: 'name', phone: '12345', email: 'email@email.com', password: 'password'});
+            user = new User({
+                name: 'name',
+                phone: '12345',
+                email: 'email@email.com',
+                password: 'password'
+            });
             await user.save();
             token = user.generateAuthToken();
             address = '30 Findlay St, Cincinnati, OH';
@@ -198,5 +203,50 @@ describe('/api/owners route', () => {
 
         })
     });
-
+    describe('PUT /:id', () => {
+        let token;
+        let newAddress;
+        let newUser;
+        let owner;
+        let id;
+        const exec = async () => {
+            return await request(server)
+                .put(`/api/owners/${id}`)
+                .set('x-auth-token', token)
+                .send({user: {_id:newUser._id,name:newUser.name,phone:newUser.phone}, address: newAddress})
+        };
+        beforeEach(async () => {
+            newUser = new User({
+                name: 'newName',
+                phone: 'newPhone',
+                email: 'newEmail@email.com',
+                password: 'newPassword'
+            });
+            await newUser.save();
+            const user = new User({
+                name: 'oldName',
+                phone: 'oldPhone',
+                email: 'oldEmail@email.com',
+                password:'oldPassword'
+            });
+            await user.save();
+            owner = new Owner({
+                user: {
+                    _id:user._id,
+                    name:user.name,
+                    phone:user.phone
+                },
+                address: '115 Winding Way, Covington, KY'
+            });
+            await owner.save();
+            token = user.generateAuthToken();
+            id = owner._id;
+            newAddress = '30 Findlay St,Cincinnati, OH'
+        });
+        it('should return 401 if client is not logged in', async () => {
+            token = '';
+            const res = await exec();
+            expect(res.status).toBe(401);
+        })
+    });
 });
