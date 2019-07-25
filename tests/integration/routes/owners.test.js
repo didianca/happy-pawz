@@ -97,7 +97,7 @@ describe('/api/owners route', () => {
                 .set('x-auth-token', token);
             expect(res.status).toBe(404);
         });
-        it('should return the owner if valid id is passed', async () => {
+        it('should return the owner', async () => {
             const token = new User().generateAuthToken();
             const user = {
                 name: 'name',
