@@ -160,7 +160,7 @@ describe('./api/roles', () => {
             expect(res.body).toHaveProperty('title', newTitle);
         });
     });
-    describe('DELETE /:id', () => {
+    describe('  /:id', () => {
         let token;
         let role;
         let id;

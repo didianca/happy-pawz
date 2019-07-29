@@ -46,7 +46,7 @@ describe('/api/rooms route', () => {
         });
     });
     describe('GET /:id', () => {
-        it('should return 404 if no token was provided', async () => {
+        it('should not require authentication', async () => {
             const caretaker = {
                 name: 'Jon Doe',
                 role: 'caretaker',
@@ -66,10 +66,12 @@ describe('/api/rooms route', () => {
             room.setOutdoorAccess();
             room.setDailyRentalRateAndName();
             await room.save();
-            const id = '1';
+            const id = room._id;
+            const token = '';
             const res = await request(server)
-                .get(`/api/rooms/${id}`);
-            expect(res.status).toBe(404);
+                .get(`/api/rooms/${id}`)
+                .set('x-auth-token', token);
+            expect(res.status).toBe(200);
         });
         it('should return 404 if no room with the given id was found', async () => {
             const caretaker = {
@@ -145,22 +147,63 @@ describe('/api/rooms route', () => {
         beforeEach(async () => {
             caretaker = new Employee({
                 name: 'caretaker name',
-                role: new Role({title:'caretaker'}),
+                role: new Role({title: 'caretaker'}),
                 phone: '12345'
             });
             await caretaker.save();
             maid = new Employee({
                 name: 'maid name',
-                role: new Role({title:'maid'}),
+                role: new Role({title: 'maid'}),
                 phone: '12345'
             });
             await maid.save();
-            token=new User({isAdmin: true}).generateAuthToken();
+            token = new User({isAdmin: true}).generateAuthToken();
         });
-        it('should return 401 if client is not logged in',async ()=>{
+        it('should return 401 if client is not logged in', async () => {
             token = '';
             const res = await exec();
             expect(res.status).toBe(401);
         });
+        it('should return 403 if client is not authorized',async()=>{
+            token = new User().generateAuthToken();
+            const res = await exec();
+            expect(res.status).toBe(403);
+        });
+        it('should return 400 if there is not caretaker with the given id',async()=>{
+            caretaker._id = mongoose.Types.ObjectId();
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if there is not maid with the given id',async()=>{
+            maid._id = mongoose.Types.ObjectId();
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should return 400 if the room is already registered',async()=>{
+            const room = new Room({
+                size: 'single',
+                level: '0',
+                caretaker: {
+                    name:'caretaker name',
+                    phone:'123456'
+                },
+                maid: {
+                    name:'maid name',
+                    phone:'123456'
+                }
+            });
+            room.setOutdoorAccess();
+            room.setDailyRentalRateAndName();
+            await room.save();
+            const res = await exec();
+            expect(res.status).toBe(400);
+        });
+        it('should set the outdoor access, daily rental rate, name and save the room',async ()=>{
+            const res = await exec();
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('name','S0');
+            expect(res.body).toHaveProperty('dailyRentalRate',250);
+            expect(res.body).toHaveProperty('outdoorAccess',true);
+        })
     });
 });
