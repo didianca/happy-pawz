@@ -115,17 +115,9 @@ function validateRoom(room) {
     };
     return Joi.validate(room, schema);
 }
-function validateRoomUpdate(room){
-    const schema = {
-        caretakerId: Joi.objectId().required(),
-        maidId: Joi.objectId().required()
-    };
-    return Joi.validate(room, schema);
-}
 //export schema for creating new instances
 //export Object for accessing instances in db
 //exporting validating function
 exports.roomSchema = roomSchema;
 exports.Room = Room;
 exports.validateRoom = validateRoom;
-exports.validateRoomUpdate = validateRoomUpdate;

@@ -13,8 +13,7 @@ const petSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 10,
-        maxlength:50,
-        unique:true
+        maxlength:50
     },
     ownerInfo: {//access owner info by accessing the owner object through it's id
         type: new mongoose.Schema({

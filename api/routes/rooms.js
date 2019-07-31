@@ -1,6 +1,6 @@
 //import all needed packages/modules
 const express = require('express');
-const {Room, validateRoom,validateRoomUpdate} = require('../models/room');
+const {Room, validateRoom} = require('../models/room');
 const validate = require('../middleware/validate');
 const router = express.Router();
 const {Employee} = require('../models/employee');
@@ -54,34 +54,6 @@ router.post('/',[auth,admin,validate(validateRoom)], async (req, res) => {
     room.setDailyRentalRateAndName();
     //save changes to db
     await room.save();
-    res.send(room);
-});
-//UPDATE existing api/rooms/:id
-router.put('/:id',  [validateObjectId,auth,admin,validate(validateRoomUpdate)], async (req, res) => {
-    //AGAIN check for correct input:
-    //caretakerId
-    const caretaker = await Employee.findOne({_id: req.body.caretakerId});
-    if (!caretaker) return res.status(400).send('Invalid caretaker...');
-    //maidId
-    const maid = await Employee.findOne({_id: req.body.maidId});
-    if (!maid) return res.status(400).send('Invalid maid...');
-    //roomId - existence? if yes then update and automatically set some properties
-    const room = await Room.findOneAndUpdate({_id: req.params.id}, {
-        caretaker: {
-            _id: caretaker._id,
-            name: caretaker.name,
-            phone: caretaker.phone
-        },
-        maid: {
-            _id: maid._id,
-            name: maid.name,
-            phone: maid.phone
-        }
-    }, {new: true});
-    room.setOutdoorAccess();
-    room.setDailyRentalRateAndName();
-    //if not -> 404
-    if (!room) return res.status(404).send('The room with the given ID was not found.');
     res.send(room);
 });
 //DEL existing api/rooms/:id

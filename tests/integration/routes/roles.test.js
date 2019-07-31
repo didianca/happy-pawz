@@ -144,7 +144,7 @@ describe('./api/roles', () => {
             const res = await exec();
             expect(res.status).toBe(404);
         });
-        it('should return 404 if title with the given id was not found', async () => {
+        it('should return 404 if the role with the given id was not found', async () => {
             id = mongoose.Types.ObjectId();
             const res = await exec();
             expect(res.status).toBe(404);
@@ -160,7 +160,7 @@ describe('./api/roles', () => {
             expect(res.body).toHaveProperty('title', newTitle);
         });
     });
-    describe('  /:id', () => {
+    describe('DELETE /:id', () => {
         let token;
         let role;
         let id;
@@ -210,5 +210,4 @@ describe('./api/roles', () => {
             expect(res.body).toHaveProperty('qualificationRate', role.qualificationRate);
         });
     });
-
 });

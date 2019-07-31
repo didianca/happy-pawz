@@ -164,32 +164,32 @@ describe('/api/rooms route', () => {
             const res = await exec();
             expect(res.status).toBe(401);
         });
-        it('should return 403 if client is not authorized',async()=>{
+        it('should return 403 if client is not authorized', async () => {
             token = new User().generateAuthToken();
             const res = await exec();
             expect(res.status).toBe(403);
         });
-        it('should return 400 if there is not caretaker with the given id',async()=>{
+        it('should return 400 if there is no caretaker with the given id', async () => {
             caretaker._id = mongoose.Types.ObjectId();
             const res = await exec();
             expect(res.status).toBe(400);
         });
-        it('should return 400 if there is not maid with the given id',async()=>{
+        it('should return 400 if there is no maid with the given id', async () => {
             maid._id = mongoose.Types.ObjectId();
             const res = await exec();
             expect(res.status).toBe(400);
         });
-        it('should return 400 if the room is already registered',async()=>{
+        it('should return 400 if the room is already registered', async () => {
             const room = new Room({
                 size: 'single',
                 level: '0',
                 caretaker: {
-                    name:'caretaker name',
-                    phone:'123456'
+                    name: 'caretaker name',
+                    phone: '123456'
                 },
                 maid: {
-                    name:'maid name',
-                    phone:'123456'
+                    name: 'maid name',
+                    phone: '123456'
                 }
             });
             room.setOutdoorAccess();
@@ -198,12 +198,15 @@ describe('/api/rooms route', () => {
             const res = await exec();
             expect(res.status).toBe(400);
         });
-        it('should set the outdoor access, daily rental rate, name and save the room',async ()=>{
+        it('should set the outdoor access, daily rental rate, name and save the room', async () => {
             const res = await exec();
             expect(res.status).toBe(200);
-            expect(res.body).toHaveProperty('name','S0');
-            expect(res.body).toHaveProperty('dailyRentalRate',250);
-            expect(res.body).toHaveProperty('outdoorAccess',true);
+            expect(res.body).toHaveProperty('name', 'S0');
+            expect(res.body).toHaveProperty('dailyRentalRate', 250);
+            expect(res.body).toHaveProperty('outdoorAccess', true);
         })
     });
+    describe('DELETE /:id',()=>{
+
+    })
 });
