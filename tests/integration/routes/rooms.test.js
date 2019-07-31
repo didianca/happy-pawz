@@ -28,8 +28,8 @@ describe('/api/rooms route', () => {
                 phone: '12345'
             };
             await Room.collection.insertMany([
-                {size: 'single', level: '0', caretakerId: caretaker, maidId: maid, dailyRentalRate: 1},
-                {size: 'single', level: '1', caretakerId: caretaker, maidId: maid, dailyRentalRate: 2}
+                {size: 'single', level: '0', caretaker: caretaker, maid: maid, dailyRentalRate: 1},
+                {size: 'single', level: '1', caretaker: caretaker, maid: maid, dailyRentalRate: 2}
             ]);
             const token = new User({isAdmin: true}).generateAuthToken();
             const res = await request(server)
@@ -206,7 +206,4 @@ describe('/api/rooms route', () => {
             expect(res.body).toHaveProperty('outdoorAccess', true);
         })
     });
-    describe('DELETE /:id',()=>{
-
-    })
 });

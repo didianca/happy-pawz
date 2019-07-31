@@ -12,7 +12,7 @@ const express = require('express');
 const router = express.Router();
 //GET one by id api/rentals/:id
 router.get('/:id', [validateObjectId,auth,admin],async (req, res) => {
-    const rental = await Rental.findOne(req.params.id);
+    const rental = await Rental.findOne({_id:req.params.id});
     if (!rental) return res.status(404).send('The rental object with the given ID was not found');
     res.send(rental);
 });
@@ -34,8 +34,8 @@ router.post('/',[auth,validate(validateRental)], async (req, res) => {
         owner: {
             _id: owner._id,
             user: {
-                name: owner.userId.name,
-                phone: owner.userId.phone
+                name: owner.user.name,
+                phone: owner.user.phone
             },
             address: owner.address
         },
