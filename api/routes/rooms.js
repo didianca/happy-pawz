@@ -25,10 +25,10 @@ router.get('/', async (req, res) => {
 router.post('/',[auth,admin,validate(validateRoom)], async (req, res) => {
     //check for proper input:
     //caretakerId
-    const caretaker = await Employee.findOne({_id: req.body.caretakerId});
+    const caretaker = await Employee.findOne({_id: req.body.caretaker});
     if (!caretaker) return res.status(400).send('Invalid caretaker...');
     //maidId
-    const maid = await Employee.findOne({_id: req.body.maidId});
+    const maid = await Employee.findOne({_id: req.body.maid});
     if (!maid) return res.status(400).send('Invalid maid...');
     //roomId - ? duplication ?
     let room = await Room.findOne({size: req.body.size, level: req.body.level});

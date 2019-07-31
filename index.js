@@ -1,6 +1,5 @@
 /* MAIN app*/
 //run node index.js to start the api
-
 const express = require('express');
 const app = express();
 const winston = require('winston');

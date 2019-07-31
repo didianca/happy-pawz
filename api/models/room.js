@@ -109,8 +109,8 @@ const Room = mongoose.model('Room', roomSchema);
 function validateRoom(room) {
     const schema = {
         size: Joi.string().min(5).max(255).required(),
-        caretakerId: Joi.objectId().required(),
-        maidId: Joi.objectId().required(),
+        caretaker: Joi.objectId().required(),
+        maid: Joi.objectId().required(),
         level: Joi.number().min(0).max(3).required()
     };
     return Joi.validate(room, schema);

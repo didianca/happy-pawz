@@ -140,8 +140,8 @@ describe('/api/rooms route', () => {
                 .send({
                     size: 'single',
                     level: '0',
-                    caretakerId: caretaker._id,
-                    maidId: maid._id
+                    caretaker: caretaker._id,
+                    maid: maid._id
                 })
         };
         beforeEach(async () => {
