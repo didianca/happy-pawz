@@ -4,7 +4,7 @@
 
 The API was build in Node.js using the Express.js framework, MongoDB for data manipulation and Jest.js for automated (integration and unit ) testing.
 
-# [test results] (/TEST_RESULTS/index.html)
+ [test results](/TEST_RESULTS/index.html)
 
 ##### In order to start the API you need to:
 1. go to the console and npm install;
