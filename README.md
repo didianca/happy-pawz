@@ -4,7 +4,7 @@
 
 The API was build in Node.js using the Express.js framework, MongoDB for data manipulation and Jest.js for automated (integration and unit ) testing.
 
- [test results](/TEST_RESULTS/index.html)
+>In order to see the test results you can download the **TEST_RESULTS** folder and open index.html. The page it will open will look like [this](https://ibb.co/hWvgfLn) and from there you can navigate to different paths and see more details.
 
 ##### In order to start the API you need to:
 1. go to the console and npm install;
